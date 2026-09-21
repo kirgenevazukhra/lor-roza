@@ -1,0 +1,176 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const byRefs = [
+  {
+    id: 'd',
+    kicker: 'Вариант D · по Mental.me и Synora',
+    name: 'Пастельный градиент',
+    thesis: 'Мягкое градиентное поле во весь экран, огромный лёгкий гротеск, снимок врача вырезкой, bento-сетка карточек и стеклянные пилюли. Самый «дорогой» и современный из трёх.',
+    note: 'Лучше всего заиграет, если портрет будет вырезан без фона.',
+    swatches: ['#EAE4F7', '#FBE6EC', '#E2EDF8', '#241F33'],
+    type: 'Onest',
+  },
+  {
+    id: 'e',
+    kicker: 'Вариант E · по CliniQ и Healthca',
+    name: 'Медицинский синий',
+    thesis: 'Прохладный синий, как медицинское приложение: тёмная шапка с фото, карточка приёма поверх неё, плотная сетка карточек, круглые синие кнопки. Самый привычный и «клинический».',
+    note: 'Вместо «часов работы» — карточка приёма: расписание по брифу не публикуем.',
+    swatches: ['#10254A', '#2D63C8', '#EDF2FA', '#FFFFFF'],
+    type: 'Manrope',
+  },
+  {
+    id: 'f',
+    kicker: 'Вариант F · по PureSmile',
+    name: 'Тёплая редактура',
+    thesis: 'Премиальный журнал: тёмно-коричневый и кремовый, крупная антиква, широкие кадры во всю полосу, золотые прописные подписи. Цены набраны антиквой как в меню ресторана.',
+    note: 'Требует хороших горизонтальных фото кабинета — на них всё держится.',
+    swatches: ['#221D18', '#F4EFE7', '#A8875C', '#E9E1D4'],
+    type: 'Oranienbaum + Onest',
+  },
+];
+
+const firstRound = [
+  {
+    id: 'a',
+    kicker: 'Вариант A',
+    name: 'Анатомический атлас',
+    thesis: 'Пластина хромолитографического ЛОР-атласа: глубокая бирюза, киноварные выносные линии, римские номера. Цена набрана крупно — число как предмет.',
+    swatches: ['#08211F', '#EDE3CF', '#D4492F', '#D4A34A'],
+    type: 'Alegreya + Alegreya Sans SC',
+  },
+  {
+    id: 'b',
+    kicker: 'Вариант B',
+    name: 'Эндоскопический кадр',
+    thesis: 'Коралловое поле, портрет в круге объектива, светлые карточки ниже. Ближе всех из первой тройки к вашим референсам.',
+    swatches: ['#D4503A', '#FDF2EE', '#F0A794', '#3B1A16'],
+    type: 'Golos Text',
+  },
+  {
+    id: 'c',
+    kicker: 'Вариант C',
+    name: 'Құрақ көрпе',
+    thesis: 'Страница собрана как лоскутное одеяло: пилёные швы, цены нашивной биркой. Единственный вариант с местным корнем.',
+    swatches: ['#A8322C', '#22406B', '#E3A63A', '#F4EDE0'],
+    type: 'Bitter + JetBrains Mono',
+  },
+];
+---
+
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Сайт ЛОР-врача — варианты</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+<main>
+  <p class="eyebrow">Пробный режим · выбрать одно направление</p>
+  <h1>Сайт ЛОР-врача Латыповой Р. Г.</h1>
+  <p class="intro">
+    Шесть главных страниц на одних и тех же данных из брифа. Открывайте с телефона —
+    именно там сайт будут смотреть. Фото пока заглушки: на них подписан путь, куда лягут
+    настоящие файлы.
+  </p>
+
+  <h2 class="group">Собраны по вашим референсам</h2>
+  <ol class="list">
+    {byRefs.map((v) => (
+      <li class="item">
+        <a href={`${base}proto/${v.id}/`}>
+          <span class="kicker">{v.kicker}</span>
+          <h3>{v.name}</h3>
+          <div class="swatches">
+            {v.swatches.map((s) => <span class="sw" style={`background:${s}`}></span>)}
+          </div>
+          <p class="thesis">{v.thesis}</p>
+          <p class="note">{v.note}</p>
+          <p class="meta">Шрифты: {v.type}</p>
+          <span class="go">Открыть вариант {v.id.toUpperCase()} →</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+
+  <h2 class="group">Первая тройка</h2>
+  <p class="group-note">Собрана до того, как стало ясно, что нужно ближе к референсам. Оставил для сравнения.</p>
+  <ol class="list quiet">
+    {firstRound.map((v) => (
+      <li class="item">
+        <a href={`${base}proto/${v.id}/`}>
+          <span class="kicker">{v.kicker}</span>
+          <h3>{v.name}</h3>
+          <div class="swatches">
+            {v.swatches.map((s) => <span class="sw" style={`background:${s}`}></span>)}
+          </div>
+          <p class="thesis">{v.thesis}</p>
+          <p class="meta">Шрифты: {v.type}</p>
+          <span class="go">Открыть вариант {v.id.toUpperCase()} →</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+
+  <section class="ask">
+    <h2>Что нужно от вас</h2>
+    <ul>
+      <li><strong>Фото врача</strong>, 5–8 шт. → <code>public/images/doctor/</code>. Важнее всех — один вертикальный портрет.</li>
+      <li><strong>Фото кабинета и оборудования</strong>, 3–5 шт. → <code>public/images/office/</code>. Для варианта F нужны широкие горизонтальные кадры.</li>
+      <li><strong>Отзывы из 2ГИС</strong>, 5–8 шт. текстом: имя без фамилии, дата, текст.</li>
+    </ul>
+    <p class="note">Дипломов не будет — блок доверия собран без них.</p>
+  </section>
+</main>
+
+<style>
+:root{--ink:#16181C; --dim:#6A6F78; --line:#E2E4E8; --acc:#2B5BD7}
+*{box-sizing:border-box}
+body{
+  margin:0; background:#F7F7F8; color:var(--ink);
+  font-family:'Onest', system-ui, sans-serif; font-size:17px; line-height:1.55;
+}
+main{max-width:780px; margin:0 auto; padding:40px 20px 60px}
+.eyebrow{
+  margin:0 0 10px; font-size:12px; font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--dim);
+}
+h1{font-size:clamp(28px,6.5vw,38px); line-height:1.15; margin:0 0 14px; letter-spacing:-.025em}
+.intro{margin:0 0 36px; color:var(--dim); max-width:56ch}
+.group{font-size:15px; font-weight:600; margin:0 0 6px; letter-spacing:-.01em}
+.group-note{margin:0 0 14px; font-size:14px; color:var(--dim)}
+.list{list-style:none; margin:0 0 40px; padding:0; display:grid; gap:14px}
+.list.quiet .item a{background:#FCFCFD}
+.item a{
+  display:block; background:#fff; border:1px solid var(--line); border-radius:16px;
+  padding:22px 20px; text-decoration:none; color:inherit;
+}
+.kicker{
+  display:block; font-size:11px; font-weight:600; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--acc); margin:0 0 8px;
+}
+.item h3{font-size:23px; margin:0 0 12px; letter-spacing:-.02em}
+.swatches{display:flex; gap:6px; margin:0 0 14px}
+.sw{width:30px; height:30px; border-radius:7px; border:1px solid rgba(0,0,0,.12)}
+.thesis{margin:0 0 8px; font-size:16px}
+.note{margin:0 0 10px; font-size:14px; color:var(--dim); font-style:italic}
+.meta{margin:0 0 14px; font-size:13px; color:var(--dim)}
+.go{font-size:15px; font-weight:600; color:var(--acc)}
+.ask{border-top:1px solid var(--line); padding-top:28px}
+.ask h2{font-size:19px; margin:0 0 14px; letter-spacing:-.01em}
+.ask ul{margin:0 0 12px; padding-left:20px}
+.ask li{margin:0 0 9px; font-size:16px}
+code{background:#EDEFF3; padding:1px 6px; border-radius:5px; font-size:14px}
+a:focus-visible{outline:2px solid var(--acc); outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){
+  .item a{transition:border-color .16s ease, box-shadow .16s ease}
+  .item a:hover{border-color:var(--acc); box-shadow:0 6px 20px rgba(43,91,215,.1)}
+}
+</style>
+</body>
+</html>

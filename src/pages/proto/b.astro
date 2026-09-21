@@ -1,0 +1,453 @@
+---
+import { contacts, services, guides, reviews, faq, prices, byGroup, hero, about } from '../../lib/site.js';
+---
+
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{contacts.doctorName} — ЛОР-врач в Астане · Вариант B</title>
+<meta name="description" content={hero.subtitle} />
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ПЕРВЫЙ ЭКРАН: поле цвета ткани, портрет в круге объектива -->
+<header class="hero">
+  <nav class="nav">
+    <span class="brand">Lor<span class="dot">.</span>roza</span>
+    <a class="nav-call" href={contacts.phoneHref}>{contacts.phoneDisplay}</a>
+  </nav>
+
+  <p class="eyebrow">Астана · приём по записи</p>
+  <h1>{hero.title}</h1>
+  <p class="sub">{hero.subtitle}</p>
+
+  <div class="scope">
+    <div class="scope-ring">
+      <div class="scope-lens">
+        <span class="ph-mark">фото врача</span>
+        <span class="ph-path">doctor/portrait.jpg</span>
+      </div>
+    </div>
+    <p class="scope-cap">{contacts.doctorName}<br /><span>практикует с {contacts.practiceSince} года</span></p>
+  </div>
+
+  <p class="line">{hero.line}</p>
+
+  <div class="actions">
+    <a class="btn btn-primary" href={contacts.whatsapp}>Написать в WhatsApp</a>
+    <a class="btn btn-quiet" href={contacts.whatsappBooking}>Записаться на приём</a>
+  </div>
+  <p class="micro">{contacts.scheduleNote}</p>
+</header>
+
+<!-- ПОЧЕМУ ВЫБИРАЮТ -->
+<section class="sec" id="why">
+  <h2 class="sec-title">Почему выбирают</h2>
+  <div class="cards">
+    {services.whyMe.map((w) => (
+      <article class="card">
+        <span class="bullet"></span>
+        <h3>{w.title}</h3>
+        <p>{w.text}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<!-- С ЧЕМ ОБРАЩАЮТСЯ -->
+<section class="sec tint" id="complaints">
+  <h2 class="sec-title">С чем обращаются</h2>
+  <ul class="complaints">
+    {services.complaints.map((c) => (
+      <li>
+        <span class="tag">{c.region}</span>
+        <h3>{c.title}</h3>
+        <p>{c.note}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<!-- О ВРАЧЕ -->
+<section class="sec" id="about">
+  <h2 class="sec-title">О враче</h2>
+  <p class="prose">{about}</p>
+  <h3 class="sub-title">Что входит в консультацию</h3>
+  <ul class="checks">
+    {services.consultationIncludes.map((s) => <li>{s}</li>)}
+  </ul>
+</section>
+
+<!-- ЦЕНЫ -->
+<section class="sec tint" id="prices">
+  <h2 class="sec-title">Услуги и цены</h2>
+  <div class="price-group">
+    <h3 class="sub-title">Приём</h3>
+    {byGroup('приём').map((p) => (
+      <div class="price-row">
+        <div class="price-txt">
+          <span class="price-name">{p.title}</span>
+          {p.meta && <span class="price-meta">{p.meta}</span>}
+        </div>
+        <span class="price-val">{p.amount}&thinsp;<i>{p.currency}</i></span>
+      </div>
+    ))}
+  </div>
+  <div class="price-group">
+    <h3 class="sub-title">Манипуляции</h3>
+    {byGroup('манипуляции').map((p) => (
+      <div class="price-row">
+        <div class="price-txt">
+          <span class="price-name">{p.title}</span>
+          {p.meta && <span class="price-meta">{p.meta}</span>}
+        </div>
+        <span class="price-val">{p.amount}&thinsp;<i>{p.currency}</i></span>
+      </div>
+    ))}
+  </div>
+  <p class="micro dark">{prices.note}</p>
+</section>
+
+<!-- КАК ПРОХОДИТ ПРИЁМ -->
+<section class="sec" id="visit">
+  <h2 class="sec-title">Как проходит приём</h2>
+  <p class="prose">Приём длится до тридцати минут. Осмотр уха, носа и горла, при необходимости — эндоскопия. Дальше разбираем, что происходит, и составляем план: что делать, чем лечить и зачем нужен каждый пункт.</p>
+
+  <div class="kids-card">
+    <h3>Если приём у ребёнка</h3>
+    <p>Ребёнок плачет на осмотре чаще не от боли, а от страха. Осмотр идёт в темпе ребёнка: сначала знакомство с инструментом, потом сам осмотр. Годовалый может перенести его спокойно, а десятилетний — испугаться, и это тоже нормально.</p>
+  </div>
+
+  <div class="gallery">
+    <div class="shot"><span class="ph-mark">кабинет</span><span class="ph-path">office/room.jpg</span></div>
+    <div class="shot"><span class="ph-mark">оборудование</span><span class="ph-path">office/endoscope.jpg</span></div>
+  </div>
+</section>
+
+<!-- ОТЗЫВЫ -->
+<section class="sec tint" id="reviews">
+  <h2 class="sec-title">Отзывы</h2>
+  {reviews.pending && <p class="pending-flag">Образцы разметки. Настоящие отзывы переносятся из 2ГИС вручную.</p>}
+  <div class="reviews">
+    {reviews.items.map((r) => (
+      <blockquote class={r.sample ? 'review is-sample' : 'review'}>
+        {r.sample && <span class="sample-tag">образец</span>}
+        <p>{r.text}</p>
+        <cite>{r.name}</cite>
+      </blockquote>
+    ))}
+  </div>
+  <a class="link-out" href={contacts.dgis}>Все отзывы в 2ГИС →</a>
+</section>
+
+<!-- МАТЕРИАЛЫ -->
+<section class="sec" id="guides">
+  <h2 class="sec-title">Полезные материалы</h2>
+  <p class="sec-note">Готовятся к публикации. Выходят после проверки врачом.</p>
+  {guides.series.map((s) => (
+    <div class="guide-block">
+      <h3 class="sub-title">{s.title}</h3>
+      <ul class="topics">{s.topics.map((t) => <li>{t}</li>)}</ul>
+    </div>
+  ))}
+</section>
+
+<!-- FAQ -->
+<section class="sec tint" id="faq">
+  <h2 class="sec-title">Частые вопросы</h2>
+  <div class="faq">
+    {faq.items.map((f) => (
+      <details>
+        <summary><span>{f.q}</span></summary>
+        {f.a && <p>{f.a}</p>}
+        {f.pendingNote && <p class="pending-inline">{f.pendingNote}</p>}
+      </details>
+    ))}
+  </div>
+</section>
+
+<!-- КОНТАКТЫ -->
+<section class="sec" id="contacts">
+  <h2 class="sec-title">Контакты</h2>
+  <dl class="contacts">
+    <dt>Адрес</dt><dd>{contacts.address}<br /><span class="muted">{contacts.city}</span></dd>
+    <dt>Запись</dt><dd>{contacts.scheduleNote}</dd>
+    <dt>Телефон</dt><dd><a href={contacts.phoneHref}>{contacts.phoneDisplay}</a></dd>
+    <dt>Instagram</dt><dd><a href={contacts.instagram}>{contacts.instagramHandle}</a></dd>
+  </dl>
+  <div class="actions">
+    <a class="btn btn-primary" href={contacts.whatsappBooking}>Записаться на приём</a>
+    <a class="btn btn-quiet" href={contacts.dgis}>Открыть в 2ГИС</a>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>{contacts.doctorName} · {contacts.specialty} · {contacts.city}</p>
+  <p class="muted">Информация на сайте не заменяет очную консультацию.</p>
+</footer>
+
+<a class="sticky-wa" href={contacts.whatsapp}>Написать в WhatsApp</a>
+
+<style>
+:root{
+  --blush:#FDF2EE;
+  --blush-2:#FAE6DF;
+  --coral:#D4503A;
+  --coral-deep:#B03B28;
+  --tissue:#F0A794;
+  --plum:#3B1A16;
+  --plum-soft:#7A544D;
+  --sans:'Golos Text', system-ui, -apple-system, sans-serif;
+  --gut:20px;
+  --maxw:620px;
+  --r:18px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--blush); color:var(--plum);
+  font-family:var(--sans); font-size:17px; line-height:1.55;
+  padding-bottom:88px; overflow-x:hidden;
+}
+a{color:inherit}
+
+/* ── первый экран: поле цвета ткани ─────────────── */
+.hero{
+  background:
+    radial-gradient(120% 80% at 78% 6%, #E16349 0%, transparent 62%),
+    linear-gradient(170deg, var(--coral) 0%, var(--coral-deep) 100%);
+  color:#FFF1EC;
+  padding:0 var(--gut) 40px;
+  border-radius:0 0 30px 30px;
+}
+.nav{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 0 26px;
+}
+.brand{font-weight:700; font-size:19px; letter-spacing:-.01em}
+.brand .dot{color:#FFD9CD}
+.nav-call{
+  display:inline-flex; align-items:center; min-height:44px; padding:0 4px;
+  font-size:15px; font-weight:500; text-decoration:none; opacity:.92; white-space:nowrap;
+}
+.eyebrow{
+  margin:0 0 12px; font-size:13px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:#FFCDBE;
+}
+.hero h1{
+  font-size:clamp(31px,8vw,46px); line-height:1.1; font-weight:700;
+  margin:0 0 14px; letter-spacing:-.025em;
+}
+.hero .sub{font-size:clamp(17px,4.2vw,19px); margin:0 0 26px; color:#FFE2D9; font-weight:400}
+
+/* круг объектива — повторяющаяся геометрия мира */
+.scope{display:flex; align-items:center; gap:16px; margin:0 0 26px}
+.scope-ring{
+  flex:0 0 132px; width:132px; height:132px; border-radius:50%;
+  padding:5px; background:rgba(255,255,255,.28);
+  box-shadow:0 10px 30px rgba(90,25,12,.28);
+}
+.scope-lens{
+  width:100%; height:100%; border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 42%, #F6BCAB 0%, #D9705A 58%, #8E3624 100%);
+  box-shadow:inset 0 0 26px rgba(80,20,10,.55);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  text-align:center; padding:8px;
+}
+.ph-mark{font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#FFF1EC}
+.ph-path{font-size:11px; color:rgba(255,241,236,.75); word-break:break-all}
+.scope-cap{margin:0; font-size:15px; font-weight:600; line-height:1.4}
+.scope-cap span{display:block; font-weight:400; font-size:14px; color:#FFCDBE; margin-top:3px}
+
+.hero .line{
+  margin:0 0 24px; font-size:15px; color:#FFF1EC;
+  padding:13px 15px; background:rgba(94,20,8,.30); border-radius:12px;
+}
+
+/* ── действия ───────────────────────────────────── */
+.actions{display:flex; flex-direction:column; gap:10px; margin:0 0 12px}
+.btn{
+  display:flex; align-items:center; justify-content:center;
+  min-height:54px; padding:0 22px; border-radius:14px;
+  text-decoration:none; font-size:16px; font-weight:600;
+}
+.hero .btn-primary{background:#FFF1EC; color:var(--coral-deep)}
+.hero .btn-quiet{background:rgba(255,255,255,.16); color:#FFF1EC; box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
+.btn-primary{background:var(--coral); color:#FFF1EC}
+.btn-quiet{background:transparent; color:var(--coral-deep); box-shadow:inset 0 0 0 1px rgba(212,80,58,.4)}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--coral-deep); outline-offset:3px}
+.micro{margin:0; font-size:13px; color:#FFCDBE}
+.micro.dark{color:var(--plum-soft)}
+
+/* ── секции ─────────────────────────────────────── */
+.sec{max-width:var(--maxw); margin:0 auto; padding:40px var(--gut)}
+.sec.tint{background:var(--blush-2); max-width:none}
+.sec.tint > *{max-width:var(--maxw); margin-left:auto; margin-right:auto}
+.sec-title{
+  font-size:13px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--coral); margin:0 0 20px;
+}
+.sub-title{font-size:15px; font-weight:600; color:var(--plum-soft); margin:0 0 12px}
+.sec-note{font-size:15px; color:var(--plum-soft); margin:-12px 0 20px}
+.prose{font-size:17px; line-height:1.62; margin:0 0 24px}
+
+/* ── карточки ───────────────────────────────────── */
+.cards{display:grid; gap:12px}
+.card{background:#fff; border-radius:var(--r); padding:20px 18px; position:relative}
+.bullet{
+  display:block; width:14px; height:14px; border-radius:50%;
+  background:radial-gradient(circle at 40% 35%, var(--tissue), var(--coral));
+  margin:0 0 12px;
+}
+.card h3{font-size:18px; font-weight:600; margin:0 0 6px}
+.card p{margin:0; font-size:15px; color:var(--plum-soft)}
+
+/* ── обращения ──────────────────────────────────── */
+.complaints{list-style:none; margin:0; padding:0; display:grid; gap:12px}
+.complaints li{background:#fff; border-radius:var(--r); padding:18px}
+.tag{
+  display:inline-block; font-size:12px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--coral); background:var(--blush);
+  padding:4px 9px; border-radius:999px; margin:0 0 9px;
+}
+.complaints h3{font-size:17px; font-weight:600; margin:0 0 5px}
+.complaints p{margin:0; font-size:15px; color:var(--plum-soft)}
+
+/* ── список услуг ───────────────────────────────── */
+.checks{list-style:none; margin:0; padding:0; display:grid; gap:9px}
+.checks li{position:relative; padding-left:24px; font-size:16px}
+.checks li::before{
+  content:''; position:absolute; left:0; top:8px; width:9px; height:9px;
+  border-radius:50%; background:var(--tissue); box-shadow:0 0 0 3px var(--blush-2);
+}
+
+/* ── цены ───────────────────────────────────────── */
+.price-group{margin:0 0 26px}
+.price-row{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+  padding:14px 0; border-bottom:1px solid rgba(59,26,22,.1);
+}
+.price-txt{display:flex; flex-direction:column}
+.price-name{font-size:16px; font-weight:500}
+.price-meta{font-size:13px; color:var(--plum-soft); margin-top:2px}
+.price-val{
+  font-size:21px; font-weight:700; white-space:nowrap;
+  font-variant-numeric:tabular-nums; color:var(--coral-deep);
+}
+.price-val i{font-style:normal; font-weight:500; font-size:15px}
+
+/* ── дети / галерея ─────────────────────────────── */
+.kids-card{
+  background:linear-gradient(160deg,#fff 0%, var(--blush-2) 100%);
+  border-radius:var(--r); padding:22px 20px; margin:0 0 20px;
+  box-shadow:inset 0 0 0 1px rgba(212,80,58,.14);
+}
+.kids-card h3{font-size:18px; font-weight:600; margin:0 0 8px; color:var(--coral-deep)}
+.kids-card p{margin:0; font-size:15px; color:var(--plum-soft)}
+.gallery{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.shot{
+  aspect-ratio:1; border-radius:50%;
+  background:radial-gradient(circle at 50% 40%, #FBD6CB 0%, #EFA994 62%, #C9755F 100%);
+  box-shadow:inset 0 0 22px rgba(120,50,35,.3);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  text-align:center; padding:12px;
+}
+.shot .ph-mark{color:#5A2318}
+.shot .ph-path{color:rgba(90,35,24,.7)}
+
+/* ── отзывы ─────────────────────────────────────── */
+.pending-flag{
+  font-size:13px; color:var(--coral-deep); background:#fff;
+  border:1px dashed rgba(212,80,58,.45); border-radius:12px;
+  padding:10px 12px; margin:-8px 0 20px;
+}
+.reviews{display:grid; gap:12px}
+.review{
+  margin:0; background:#fff; border-radius:var(--r); padding:20px 18px 16px; position:relative;
+}
+.review.is-sample{box-shadow:inset 0 0 0 1px rgba(212,80,58,.22)}
+.sample-tag{
+  display:inline-block; font-size:10px; font-weight:700; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--coral); margin:0 0 8px;
+}
+.review p{margin:0 0 10px; font-size:16px}
+.review cite{font-style:normal; font-size:14px; font-weight:600; color:var(--plum-soft)}
+.link-out{
+  display:inline-flex; align-items:center; min-height:44px; margin-top:8px;
+  font-size:15px; font-weight:600; color:var(--coral); text-decoration:none;
+}
+
+/* ── материалы ──────────────────────────────────── */
+.guide-block{margin:0 0 24px}
+.topics{list-style:none; margin:0; padding:0}
+.topics li{
+  padding:11px 0; border-bottom:1px solid rgba(59,26,22,.09); font-size:16px;
+}
+
+/* ── faq ────────────────────────────────────────── */
+.faq details{background:#fff; border-radius:14px; margin:0 0 10px; overflow:hidden}
+.faq summary{
+  cursor:pointer; padding:16px 18px; font-size:16px; font-weight:500; list-style:none;
+  display:flex; align-items:flex-start; gap:12px; min-height:44px;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'+'; color:var(--coral); font-weight:700; flex:0 0 auto}
+.faq details[open] summary::before{content:'–'}
+.faq p{margin:0 0 16px; padding:0 18px 0 42px; font-size:15px; color:var(--plum-soft)}
+.pending-inline{font-style:italic; color:var(--coral-deep)}
+
+/* ── контакты ───────────────────────────────────── */
+.contacts{margin:0 0 24px; display:grid; grid-template-columns:auto 1fr; gap:12px 18px}
+.contacts dt{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--plum-soft); padding-top:4px}
+.contacts dd{margin:0; font-size:16px}
+.contacts dd a{display:inline-flex; align-items:center; min-height:44px}
+.muted{color:var(--plum-soft)}
+
+/* ── подвал ─────────────────────────────────────── */
+.foot{
+  max-width:var(--maxw); margin:0 auto; padding:24px var(--gut) 34px;
+  border-top:1px solid rgba(59,26,22,.1); font-size:14px; color:var(--plum-soft);
+}
+.foot p{margin:0 0 5px}
+
+/* ── закреплённая кнопка ────────────────────────── */
+.sticky-wa{
+  position:fixed; left:12px; right:12px; bottom:12px; z-index:30;
+  display:flex; align-items:center; justify-content:center;
+  min-height:56px; border-radius:16px; background:var(--coral); color:#FFF1EC;
+  text-decoration:none; font-size:16px; font-weight:600;
+  box-shadow:0 10px 26px rgba(150,50,30,.32);
+}
+
+/* ── десктоп ────────────────────────────────────── */
+@media (min-width:768px){
+  :root{--gut:40px; --maxw:880px}
+  body{font-size:18px; padding-bottom:0}
+  .hero{padding-bottom:56px; border-radius:0 0 44px 44px}
+  .hero > *{max-width:var(--maxw); margin-left:auto; margin-right:auto}
+  .hero h1{max-width:14ch}
+  .scope{gap:26px}
+  .scope-ring{flex-basis:190px; width:190px; height:190px}
+  .actions{flex-direction:row}
+  .btn{flex:0 0 auto; min-width:250px}
+  .cards{grid-template-columns:1fr 1fr}
+  .complaints{grid-template-columns:1fr 1fr}
+  .checks{grid-template-columns:1fr 1fr; gap:10px 24px}
+  .reviews{grid-template-columns:1fr 1fr}
+  .gallery{grid-template-columns:repeat(2,240px); justify-content:start}
+  .sticky-wa{display:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .btn,.link-out{transition:transform .16s ease, background-color .16s ease}
+  .btn:hover{transform:translateY(-1px)}
+}
+</style>
+</body>
+</html>

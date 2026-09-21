@@ -1,0 +1,473 @@
+---
+import { contacts, services, guides, reviews, faq, prices, byGroup, hero, about } from '../../lib/site.js';
+const grounds = ['g-red', 'g-indigo', 'g-saffron', 'g-bone', 'g-indigo'];
+---
+
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{contacts.doctorName} — ЛОР-врач в Астане · Вариант C</title>
+<meta name="description" content={hero.subtitle} />
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<header class="topbar">
+  <span class="brand">Lor<span class="dot">.</span>roza</span>
+  <a class="topcall" href={contacts.phoneHref}>{contacts.phoneDisplay}</a>
+</header>
+
+<!-- БЛОК 1 — центральный лоскут -->
+<section class="block g-red hero">
+  <span class="label">блок 01 · Астана</span>
+  <h1>{hero.title}</h1>
+  <p class="sub">{hero.subtitle}</p>
+
+  <div class="patch-photo">
+    <span class="ph-mark">фото врача</span>
+    <span class="ph-path">doctor/portrait.jpg</span>
+    <span class="ph-hint">вертикальный портрет</span>
+  </div>
+  <p class="cap">{contacts.doctorName} · практикует с {contacts.practiceSince} года</p>
+
+  <p class="line">{hero.line}</p>
+
+  <div class="actions">
+    <a class="btn btn-light" href={contacts.whatsapp}>Написать в WhatsApp</a>
+    <a class="btn btn-outline" href={contacts.whatsappBooking}>Записаться на приём</a>
+  </div>
+  <p class="micro">{contacts.scheduleNote}</p>
+</section>
+
+<div class="seam"></div>
+
+<!-- БЛОК 2 — почему выбирают -->
+<section id="why" class="block g-bone">
+  <span class="label">блок 02</span>
+  <h2>Почему выбирают</h2>
+  <div class="pieces">
+    {services.whyMe.map((w, i) => (
+      <article class={'piece ' + grounds[i % grounds.length]}>
+        <span class="piece-no">{String(i + 1).padStart(2, '0')}</span>
+        <h3>{w.title}</h3>
+        <p>{w.text}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<div class="seam"></div>
+
+<!-- БЛОК 3 — с чем обращаются -->
+<section id="complaints" class="block g-indigo">
+  <span class="label">блок 03</span>
+  <h2>С чем обращаются</h2>
+  <ul class="complaints">
+    {services.complaints.map((c) => (
+      <li>
+        <span class="tag">{c.region}</span>
+        <h3>{c.title}</h3>
+        <p>{c.note}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<div class="seam"></div>
+
+<!-- БЛОК 4 — о враче -->
+<section id="about" class="block g-bone">
+  <span class="label">блок 04</span>
+  <h2>О враче</h2>
+  <p class="prose">{about}</p>
+  <span class="label inline">что входит в консультацию</span>
+  <ul class="checks">
+    {services.consultationIncludes.map((s) => <li>{s}</li>)}
+  </ul>
+</section>
+
+<div class="seam"></div>
+
+<!-- БЛОК 5 — цены: нашивная бирка -->
+<section id="prices" class="block g-saffron">
+  <span class="label">блок 05</span>
+  <h2>Услуги и цены</h2>
+  <div class="tag-card">
+    <span class="tag-card-head">приём</span>
+    {byGroup('приём').map((p) => (
+      <div class="prow">
+        <span class="pname">{p.title}</span>
+        <span class="pdots"></span>
+        <span class="pval">{p.amount}&nbsp;{p.currency}</span>
+        {p.meta && <span class="pmeta">{p.meta}</span>}
+      </div>
+    ))}
+    <span class="tag-card-head">манипуляции</span>
+    {byGroup('манипуляции').map((p) => (
+      <div class="prow">
+        <span class="pname">{p.title}</span>
+        <span class="pdots"></span>
+        <span class="pval">{p.amount}&nbsp;{p.currency}</span>
+        {p.meta && <span class="pmeta">{p.meta}</span>}
+      </div>
+    ))}
+  </div>
+  <p class="micro dark">{prices.note}</p>
+</section>
+
+<div class="seam"></div>
+
+<!-- БЛОК 6 — как проходит приём -->
+<section id="visit" class="block g-bone">
+  <span class="label">блок 06</span>
+  <h2>Как проходит приём</h2>
+  <p class="prose">Приём длится до тридцати минут. Осмотр уха, носа и горла, при необходимости — эндоскопия. Дальше разбираем, что происходит, и составляем план: что делать, чем лечить и зачем нужен каждый пункт.</p>
+  <div class="piece g-red wide">
+    <span class="piece-no">детям</span>
+    <p>Ребёнок плачет на осмотре чаще не от боли, а от страха. Осмотр идёт в темпе ребёнка: сначала знакомство с инструментом, потом сам осмотр. Годовалый может перенести его спокойно, а десятилетний — испугаться, и это тоже нормально.</p>
+  </div>
+  <div class="gallery">
+    <div class="patch-photo flat"><span class="ph-mark">кабинет</span><span class="ph-path">office/room.jpg</span></div>
+    <div class="patch-photo flat"><span class="ph-mark">оборудование</span><span class="ph-path">office/endoscope.jpg</span></div>
+  </div>
+</section>
+
+<div class="seam"></div>
+
+<!-- БЛОК 7 — отзывы: каждый лоскут — живой человек -->
+<section id="reviews" class="block g-indigo">
+  <span class="label">блок 07</span>
+  <h2>Отзывы</h2>
+  {reviews.pending && <p class="pending-flag">Образцы разметки. Настоящие отзывы переносятся из 2ГИС вручную.</p>}
+  <div class="reviews">
+    {reviews.items.map((r, i) => (
+      <blockquote class={'review ' + (i % 2 ? 'g-bone' : 'g-saffron')}>
+        {r.sample && <span class="sample-tag">образец</span>}
+        <p>{r.text}</p>
+        <cite>{r.name}</cite>
+      </blockquote>
+    ))}
+  </div>
+  <a class="link-out" href={contacts.dgis}><span>Все отзывы в 2ГИС →</span></a>
+</section>
+
+<div class="seam"></div>
+
+<!-- БЛОК 8 — материалы -->
+<section id="guides" class="block g-bone">
+  <span class="label">блок 08</span>
+  <h2>Полезные материалы</h2>
+  <p class="note">Готовятся к публикации. Выходят после проверки врачом.</p>
+  {guides.series.map((s) => (
+    <div class="guide-block">
+      <span class="label inline">{s.title}</span>
+      <ul class="topics">{s.topics.map((t) => <li>{t}</li>)}</ul>
+    </div>
+  ))}
+</section>
+
+<div class="seam"></div>
+
+<!-- БЛОК 9 — вопросы -->
+<section id="faq" class="block g-saffron">
+  <span class="label">блок 09</span>
+  <h2>Частые вопросы</h2>
+  <div class="faq">
+    {faq.items.map((f) => (
+      <details>
+        <summary><span>{f.q}</span></summary>
+        {f.a && <p>{f.a}</p>}
+        {f.pendingNote && <p class="pending-inline">{f.pendingNote}</p>}
+      </details>
+    ))}
+  </div>
+</section>
+
+<div class="seam"></div>
+
+<!-- БЛОК 10 — контакты -->
+<section id="contacts" class="block g-red">
+  <span class="label">блок 10</span>
+  <h2>Контакты</h2>
+  <dl class="contacts">
+    <dt>Адрес</dt><dd>{contacts.address}<br /><span class="muted">{contacts.city}</span></dd>
+    <dt>Запись</dt><dd>{contacts.scheduleNote}</dd>
+    <dt>Телефон</dt><dd><a href={contacts.phoneHref}>{contacts.phoneDisplay}</a></dd>
+    <dt>Instagram</dt><dd><a href={contacts.instagram}>{contacts.instagramHandle}</a></dd>
+  </dl>
+  <div class="actions">
+    <a class="btn btn-light" href={contacts.whatsappBooking}>Записаться на приём</a>
+    <a class="btn btn-outline" href={contacts.dgis}>Открыть в 2ГИС</a>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>{contacts.doctorName} · {contacts.specialty} · {contacts.city}</p>
+  <p class="muted">Информация на сайте не заменяет очную консультацию.</p>
+</footer>
+
+<a class="sticky-wa" href={contacts.whatsapp}>Написать в WhatsApp</a>
+
+<style>
+:root{
+  --red:#A8322C;
+  --red-dk:#8B2521;
+  --indigo:#22406B;
+  --indigo-dk:#1A3254;
+  --saffron:#E3A63A;
+  --bone:#F4EDE0;
+  --bone-2:#E9DFCC;
+  --ink:#241C18;
+  --stitch:#F4EDE0;
+  --slab:'Bitter', Georgia, serif;
+  --mono:'JetBrains Mono', ui-monospace, monospace;
+  --gut:20px;
+  --maxw:620px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bone); color:var(--ink);
+  font-family:var(--slab); font-size:17px; line-height:1.55;
+  padding-bottom:88px; overflow-x:hidden;
+}
+a{color:inherit}
+
+/* ── грунты лоскутов ────────────────────────────── */
+.g-red{background:var(--red); color:var(--bone)}
+.g-indigo{background:var(--indigo); color:var(--bone)}
+.g-saffron{background:var(--saffron); color:var(--ink)}
+.g-bone{background:var(--bone); color:var(--ink)}
+
+/* ── планка ─────────────────────────────────────── */
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--ink); color:var(--bone);
+  padding:11px var(--gut); position:sticky; top:0; z-index:20;
+}
+.brand{font-family:var(--slab); font-weight:700; font-size:18px}
+.brand .dot{color:var(--saffron)}
+.topcall{
+  display:inline-flex; align-items:center; min-height:44px; padding:0 2px;
+  font-family:var(--mono); font-size:13px; text-decoration:none; white-space:nowrap;
+}
+
+/* ── шов между блоками: пиленый край лоскута ────── */
+.seam{
+  height:16px;
+  background-color:var(--stitch);
+  background-image:
+    linear-gradient(45deg, var(--ink) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--ink) 25%, transparent 25%);
+  background-size:22px 22px;
+  background-position:0 0, 0 0;
+  opacity:.9;
+}
+
+/* ── блок ───────────────────────────────────────── */
+.block{position:relative; padding:34px var(--gut) 34px}
+.block > *{max-width:var(--maxw); margin-left:auto; margin-right:auto}
+.label{
+  display:block; font-family:var(--mono); font-size:12px; font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; opacity:.72; margin:0 0 14px;
+}
+.label.inline{margin:22px 0 10px; opacity:.85}
+h1{
+  font-family:var(--slab); font-size:clamp(30px,7.8vw,44px); line-height:1.12;
+  font-weight:700; margin:0 0 14px; letter-spacing:-.02em;
+}
+h2{
+  font-family:var(--slab); font-size:clamp(23px,5.6vw,30px); line-height:1.2;
+  font-weight:700; margin:0 0 18px; letter-spacing:-.015em;
+}
+.sub{font-size:17px; margin:0 0 22px; opacity:.92}
+.prose{font-size:17px; line-height:1.62; margin:0 0 6px}
+.note{font-size:15px; opacity:.75; margin:-8px 0 18px}
+
+/* заплата под фото — с видимой строчкой по периметру */
+.patch-photo{
+  aspect-ratio:1; width:100%; margin:0 0 10px;
+  background:
+    repeating-linear-gradient(90deg, rgba(244,237,224,.07) 0 6px, transparent 6px 13px),
+    var(--red-dk);
+  border:2px dashed rgba(244,237,224,.55);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
+  text-align:center; padding:12px;
+}
+.patch-photo.flat{aspect-ratio:1; background:var(--bone-2); border-color:rgba(36,28,24,.4)}
+.patch-photo.flat .ph-mark,.patch-photo.flat .ph-path{color:var(--ink)}
+.ph-mark{font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase}
+.ph-path{font-family:var(--mono); font-size:11px; opacity:.75; word-break:break-all}
+.ph-hint{font-size:13px; font-style:italic; opacity:.7}
+.cap{font-family:var(--mono); font-size:13px; margin:0 0 20px; opacity:.85}
+
+.line{
+  margin:0 0 22px; font-size:15px;
+  border-top:2px dashed rgba(244,237,224,.5);
+  border-bottom:2px dashed rgba(244,237,224,.5);
+  padding:12px 0;
+}
+
+/* ── действия ───────────────────────────────────── */
+.actions{display:flex; flex-direction:column; gap:10px; margin:0 0 12px}
+.btn{
+  display:flex; align-items:center; justify-content:center; min-height:54px; padding:0 22px;
+  text-decoration:none; font-family:var(--mono); font-size:14px; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase;
+  border:2px solid transparent;
+}
+.btn-light{background:var(--bone); color:var(--red-dk); border-color:var(--bone)}
+.btn-outline{background:transparent; color:var(--bone); border-color:rgba(244,237,224,.6); border-style:dashed}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--saffron); outline-offset:2px}
+.micro{font-family:var(--mono); font-size:12px; margin:0; opacity:.8}
+.micro.dark{color:var(--ink)}
+
+/* ── лоскуты-карточки ───────────────────────────── */
+.pieces{display:grid; gap:12px}
+.piece{padding:18px 16px; border:2px dashed rgba(36,28,24,.3)}
+.piece.g-red,.piece.g-indigo{border-color:rgba(244,237,224,.45)}
+.piece.wide{margin-top:18px; margin-bottom:18px}
+.piece-no{
+  display:block; font-family:var(--mono); font-size:12px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase; opacity:.8; margin:0 0 8px;
+}
+.piece h3{font-family:var(--slab); font-size:18px; font-weight:600; margin:0 0 6px}
+.piece p{margin:0; font-size:15px; opacity:.92}
+
+/* ── обращения ──────────────────────────────────── */
+.complaints{list-style:none; margin:0; padding:0; display:grid; gap:12px}
+.complaints li{background:var(--bone); color:var(--ink); padding:16px; border:2px dashed rgba(36,28,24,.28)}
+.tag{
+  display:inline-block; font-family:var(--mono); font-size:10px; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; background:var(--indigo); color:var(--bone);
+  padding:3px 8px; margin:0 0 9px;
+}
+.complaints h3{font-family:var(--slab); font-size:17px; font-weight:600; margin:0 0 5px}
+.complaints p{margin:0; font-size:15px; opacity:.8}
+
+/* ── перечень ───────────────────────────────────── */
+.checks{list-style:none; margin:0; padding:0; display:grid; gap:0}
+.checks li{
+  padding:9px 0 9px 22px; position:relative; font-size:16px;
+  border-bottom:1px dashed rgba(36,28,24,.22);
+}
+.checks li::before{
+  content:'×'; position:absolute; left:2px; top:9px;
+  font-family:var(--mono); color:var(--red); font-weight:700;
+}
+
+/* ── цены: нашивная бирка ───────────────────────── */
+.tag-card{
+  background:var(--bone); color:var(--ink);
+  border:2px dashed var(--ink); padding:18px 16px; margin:0 0 14px;
+}
+.tag-card-head{
+  display:block; font-family:var(--mono); font-size:12px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--red);
+  margin:0 0 10px; padding-bottom:6px; border-bottom:1px solid rgba(36,28,24,.25);
+}
+.tag-card-head + .prow{margin-top:0}
+.tag-card .tag-card-head:not(:first-child){margin-top:24px}
+.prow{
+  display:grid; grid-template-columns:auto 1fr auto; align-items:baseline;
+  gap:6px; padding:9px 0 0;
+}
+.pname{font-size:16px}
+.pdots{border-bottom:1px dotted rgba(36,28,24,.45); transform:translateY(-4px)}
+.pval{font-family:var(--mono); font-size:17px; font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap}
+.pmeta{
+  grid-column:1 / -1; font-family:var(--mono); font-size:12px; opacity:.7;
+  padding-bottom:8px; border-bottom:1px dashed rgba(36,28,24,.2);
+}
+
+/* ── галерея ────────────────────────────────────── */
+.gallery{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:6px}
+.gallery .patch-photo{margin:0}
+
+/* ── отзывы ─────────────────────────────────────── */
+.pending-flag{
+  font-family:var(--mono); font-size:12px; border:2px dashed rgba(244,237,224,.5);
+  padding:10px 12px; margin:-6px 0 18px;
+}
+.reviews{display:grid; gap:12px}
+.review{margin:0; padding:18px 16px 14px; border:2px dashed rgba(36,28,24,.35)}
+.sample-tag{
+  display:inline-block; font-family:var(--mono); font-size:10px; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--red); margin:0 0 8px;
+}
+.review p{margin:0 0 10px; font-size:16px}
+.review cite{font-family:var(--mono); font-style:normal; font-size:12px; font-weight:700; opacity:.75}
+.link-out{
+  display:inline-flex; align-items:center; min-height:44px; margin-top:8px;
+  font-family:var(--mono); font-size:13px; font-weight:700; text-decoration:none;
+}
+.link-out span{border-bottom:2px dashed currentColor; padding-bottom:3px}
+
+/* ── материалы ──────────────────────────────────── */
+.guide-block{margin:0 0 6px}
+.topics{list-style:none; margin:0; padding:0}
+.topics li{padding:10px 0; border-bottom:1px dashed rgba(36,28,24,.22); font-size:16px}
+
+/* ── faq ────────────────────────────────────────── */
+.faq details{border:2px dashed rgba(36,28,24,.3); margin:0 0 10px; background:var(--bone)}
+.faq summary{
+  cursor:pointer; padding:15px 16px; font-size:16px; font-weight:500; list-style:none;
+  display:flex; align-items:flex-start; gap:12px; min-height:44px;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'+'; font-family:var(--mono); color:var(--red); font-weight:700; flex:0 0 auto}
+.faq details[open] summary::before{content:'–'}
+.faq p{margin:0 0 15px; padding:0 16px 0 40px; font-size:15px; opacity:.85}
+.pending-inline{font-style:italic; color:var(--red)}
+
+/* ── контакты ───────────────────────────────────── */
+.contacts{margin:0 0 22px; display:grid; grid-template-columns:auto 1fr; gap:12px 18px}
+.contacts dt{font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; opacity:.75; padding-top:4px}
+.contacts dd{margin:0; font-size:16px}
+.contacts dd a{display:inline-flex; align-items:center; min-height:44px}
+.muted{opacity:.75}
+
+/* ── подвал ─────────────────────────────────────── */
+.foot{
+  background:var(--ink); color:var(--bone);
+  padding:26px var(--gut) 34px; font-family:var(--mono); font-size:12px;
+}
+.foot p{margin:0 0 6px; max-width:var(--maxw); margin-left:auto; margin-right:auto}
+
+/* ── закреплённая кнопка ────────────────────────── */
+.sticky-wa{
+  position:fixed; left:12px; right:12px; bottom:12px; z-index:30;
+  display:flex; align-items:center; justify-content:center; min-height:56px;
+  background:var(--red); color:var(--bone); text-decoration:none;
+  font-family:var(--mono); font-size:14px; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase;
+  border:2px solid var(--bone);
+  box-shadow:0 8px 26px rgba(36,28,24,.45);
+}
+
+/* ── десктоп ────────────────────────────────────── */
+@media (min-width:768px){
+  :root{--gut:40px; --maxw:880px}
+  body{font-size:18px; padding-bottom:0}
+  .block{padding:52px var(--gut)}
+  .hero h1{max-width:15ch}
+  .hero{display:block}
+  .hero .patch-photo{aspect-ratio:16/9}
+  .gallery .patch-photo{aspect-ratio:1}
+  .actions{flex-direction:row}
+  .btn{flex:0 0 auto; min-width:260px}
+  .pieces{grid-template-columns:1fr 1fr}
+  .complaints{grid-template-columns:1fr 1fr}
+  .checks{grid-template-columns:1fr 1fr; gap:0 28px}
+  .reviews{grid-template-columns:1fr 1fr}
+  .gallery{grid-template-columns:repeat(2,260px); justify-content:start}
+  .sticky-wa{display:none}
+}
+</style>
+</body>
+</html>

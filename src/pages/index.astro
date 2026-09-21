@@ -1,0 +1,784 @@
+---
+import Photo from '../components/Photo.astro';
+import { contacts, services, guides, reviews, faq, prices, byGroup, hero, about, heroLineHead, heroLineTail } from '../lib/site.js';
+
+// Мессенджеры требуют абсолютный URL — иначе превью не собирается.
+// BASE_URL приходит без завершающего слеша — дописываем, иначе пути склеиваются
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const canonical = new URL(base, Astro.site).href;
+const ogImage = new URL(`${base}og.jpg`, Astro.site).href;
+const ogDescription = `${hero.subtitle} ${hero.line}`;
+
+// Область жалобы -> иконка
+const regionIcon = { 'ухо': 'ear', 'нос': 'nose', 'горло': 'throat' };
+
+const filmstrip = [
+  // врач
+  { name: 'portrait-lamp',  w: [640, 1024, 1600], alt: 'Розалия Галинуровна поправляет налобный осветитель' },
+  // с ребёнком
+  { name: 'child-exam',     w: [640, 1024, 1600], alt: 'Осмотр ребёнка: врач и девочка улыбаются' },
+  { name: 'child-table',    w: [640, 1024, 1600], alt: 'Врач и ребёнок за столом с инструментами' },
+  { name: 'child-hug',      w: [640, 1024, 1600], alt: 'Врач обнимает маленькую пациентку' },
+  // инструменты
+  { name: 'tool-hand',      w: [640, 1024, 1600], alt: 'Рука врача с ЛОР-инструментом' },
+  { name: 'tools-flat',     w: [640, 1024, 1600], alt: 'ЛОР-инструменты, разложенные на столе' },
+  { name: 'tool-otoscope',  w: [640, 1024, 1600], alt: 'Отоскоп крупным планом' },
+  // кабинет
+  { name: 'office/room-3',  w: [640, 1024],       alt: 'ЛОР-кресло и рабочее место врача' },
+  { name: 'office/room-1',  w: [640, 1024],       alt: 'Эндоскопическая стойка: на экране снимки барабанных перепонок' },
+  { name: 'office/room-2',  w: [640, 1024],       alt: 'Кабинет: кресло, стол и монитор' },
+  { name: 'office/room-4',  w: [640, 1024],       alt: 'ЛОР-комбайн' },
+];
+---
+
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{contacts.doctorName} — ЛОР-врач для детей и взрослых в Астане</title>
+<meta name="description" content={`${hero.subtitle} ${hero.line} Приём по записи, Астана.`} />
+<!-- Черновик на согласовании: в поиск не отдаём до запуска на своём домене. -->
+<link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+<link rel="icon" href={`${base}favicon.png`} sizes="32x32" />
+<link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
+<meta name="theme-color" content="#F4EFE7" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="canonical" href={canonical} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Lor.roza" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="ЛОР-врач для детей и взрослых в Астане" />
+<meta property="og:description" content={ogDescription} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Латыпова Розалия Галинуровна — ЛОР-врач в Астане" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="ЛОР-врач для детей и взрослых в Астане" />
+<meta name="twitter:description" content={ogDescription} />
+<meta name="twitter:image" content={ogImage} />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oranienbaum&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script is:inline>document.documentElement.classList.add('js')</script>
+<!-- Пути к текстурам в CSS абсолютные, поэтому base подставляем переменными. -->
+<style is:inline set:html={`:root{
+  --paper-url:url('${base}images/textures/paper.webp');
+  --hero-bg-url:url('${base}images/textures/hero-bg.webp');
+  --divider-url:url('${base}images/textures/divider.png');
+}`}></style>
+</head>
+<body>
+
+<a class="skip" href="#main">К содержанию</a>
+
+<!-- ─── ПЕРВЫЙ ЭКРАН ─────────────────────────────── -->
+<header class="hero">
+  <nav class="nav">
+    <a class="brand" href={base}>Lor<span class="dot">.</span>roza</a>
+    <a class="nav-call" href={contacts.phoneHref}>
+      <span class="nav-call-label">Запись по телефону</span>
+      <span class="nav-call-num">{contacts.phoneDisplay}</span>
+    </a>
+  </nav>
+
+  <figure class="hero-figure">
+    <Photo
+      name="portrait-tools"
+      alt="Латыпова Розалия Галинуровна, врач-оториноларинголог, с отоскопом и налобным осветителем"
+      sizes="(min-width:900px) 46vw, 100vw"
+      widths={[640, 1024, 1440, 1600, 2000]}
+      loading="eager"
+      fetchpriority="high"
+      class="hero-img"
+    />
+  </figure>
+
+  <div class="hero-panel">
+    <p class="rule-label"><span class="rule"></span>Астана · приём по записи</p>
+    <h1 class="reveal">
+      <span class="ln">ЛОР-врач</span>
+      <span class="ln">для детей</span>
+      <span class="ln">и взрослых</span>
+      <span class="ln ln-gold">в Астане</span>
+    </h1>
+    <p class="hero-sub">{hero.subtitle}</p>
+    <div class="actions">
+      <a class="btn btn-solid" href={contacts.whatsapp}>Написать в WhatsApp</a>
+      <a class="btn btn-line" href={contacts.whatsappBooking}>Записаться на приём</a>
+    </div>
+    <p class="hero-note">{contacts.scheduleNote}</p>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ─── МАНИФЕСТ ─────────────────────────────────── -->
+<section class="sec cream" id="about">
+  <p class="kicker">О враче</p>
+  <h2 class="display reveal"><span class="ln">{heroLineHead}</span></h2>
+  <p class="lede">{heroLineTail}</p>
+
+  <div class="split">
+    <figure class="split-fig">
+      <Photo name="portrait-seated" alt="Розалия Галинуровна" sizes="(min-width:900px) 34vw, 100vw" />
+    </figure>
+    <div class="split-body">
+      <p class="prose">{about}</p>
+      <p class="sig">{contacts.doctorName}<em>врач-оториноларинголог</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ПРИНЦИПЫ ─────────────────────────────────── -->
+<section class="sec cream tight" id="why">
+  <p class="kicker">Принципы</p>
+  <h2 class="display reveal"><span class="ln">Почему выбирают</span></h2>
+  <div class="pillars">
+    {services.whyMe.map((w, i) => (
+      <article class="pillar">
+        <div class="pillar-head">
+          <img class="pillar-ico" src={`${base}images/icons/${w.id}.png`} alt="" width="44" height="44" loading="lazy" decoding="async" />
+          <span class="pillar-no">{String(i + 1).padStart(2, '0')}</span>
+        </div>
+        <h3>{w.title}</h3>
+        <p>{w.text}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<hr class="orn" />
+
+<!-- ─── ШИРОКИЙ АКЦЕНТ ───────────────────────────── -->
+<section class="band">
+  <figure class="band-fig">
+    <Photo name="wide-flatlay" alt="Врач и ЛОР-инструменты, снятые сверху" sizes="100vw" />
+  </figure>
+  <blockquote class="band-quote">
+    <p>Назначаю лечение только тогда,<br />когда оно действительно необходимо.</p>
+    <cite>{contacts.doctorShort}</cite>
+  </blockquote>
+</section>
+
+<!-- ─── НАПРАВЛЕНИЯ ──────────────────────────────── -->
+<section class="sec cream" id="complaints">
+  <p class="kicker">Направления</p>
+  <h2 class="display reveal"><span class="ln">С чем обращаются</span></h2>
+  <ul class="entries">
+    {services.complaints.map((c) => (
+      <li>
+        <span class="entry-tag">
+          <img src={`${base}images/icons/${regionIcon[c.region]}.png`} alt="" width="30" height="30" loading="lazy" decoding="async" />
+          {c.region}
+        </span>
+        <h3>{c.title}</h3>
+        <p>{c.note}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<!-- ─── ПРИЁМ ────────────────────────────────────── -->
+<section class="sec dark" id="visit">
+  <p class="kicker light">Приём</p>
+  <h2 class="display light reveal"><span class="ln">Как проходит приём</span></h2>
+  <p class="lede light">Приём длится до тридцати минут. Осмотр уха, носа и горла, при необходимости — эндоскопия. Дальше разбираем, что происходит, и составляем план: что делать, чем лечить и зачем нужен каждый пункт.</p>
+
+  <div class="duo">
+    <figure class="duo-fig">
+      <Photo name="wide-exam" alt="Осмотр ребёнка в кабинете" sizes="(min-width:900px) 48vw, 100vw" />
+    </figure>
+    <div class="duo-body">
+      <h3>Если приём у ребёнка</h3>
+      <p>Ребёнок плачет на осмотре чаще не от боли, а от страха. Осмотр идёт в темпе ребёнка: сначала знакомство с инструментом, потом сам осмотр. Годовалый может перенести его спокойно, а десятилетний — испугаться, и это тоже нормально.</p>
+    </div>
+  </div>
+
+  <p class="kicker light strip-label">Кабинет и работа</p>
+</section>
+
+<!-- ─── ЛЕНТА КАДРОВ ─────────────────────────────── -->
+<section class="filmstrip dark-cont" aria-label="Фотографии кабинета и приёма">
+  <div class="strip" tabindex="0">
+    {filmstrip.map((f) => (
+      <figure class="strip-item">
+        <Photo name={f.name} alt={f.alt} sizes="(min-width:900px) 26vw, 68vw" widths={f.w} />
+      </figure>
+    ))}
+  </div>
+</section>
+
+<!-- ─── ЧТО ВХОДИТ ───────────────────────────────── -->
+<section class="sec cream" id="services">
+  <p class="kicker">Консультация</p>
+  <h2 class="display reveal"><span class="ln">Что входит в приём</span></h2>
+  <ul class="checks">
+    {services.consultationIncludes.map((s) => <li>{s}</li>)}
+  </ul>
+</section>
+
+<hr class="orn" />
+
+<!-- ─── ЦЕНЫ ─────────────────────────────────────── -->
+<section class="sec sand" id="prices">
+  <p class="kicker">Прайс</p>
+  <h2 class="display reveal"><span class="ln">Услуги и цены</span></h2>
+  <div class="price-list">
+    <p class="price-head">Приём</p>
+    {byGroup('приём').map((p) => (
+      <div class="prow">
+        <span class="pname">{p.title}{p.meta && <em>{p.meta}</em>}</span>
+        <span class="pval">{p.amount}&thinsp;{p.currency}</span>
+      </div>
+    ))}
+    <p class="price-head mt">Манипуляции</p>
+    {byGroup('манипуляции').map((p) => (
+      <div class="prow">
+        <span class="pname">{p.title}{p.meta && <em>{p.meta}</em>}</span>
+        <span class="pval">{p.amount}&thinsp;{p.currency}</span>
+      </div>
+    ))}
+  </div>
+  <p class="micro">{prices.note}</p>
+</section>
+
+<!-- ─── ОТЗЫВЫ ───────────────────────────────────── -->
+<section class="sec cream" id="reviews">
+  <p class="kicker">Отзывы</p>
+  <h2 class="display reveal"><span class="ln">Что говорят пациенты</span></h2>
+  {reviews.pending && <p class="pending-flag">Образцы разметки. Настоящие отзывы переносятся из 2ГИС вручную.</p>}
+  <div class="quotes">
+    {reviews.items.map((r) => (
+      <blockquote class="quote">
+        <p>{r.text}</p>
+        <cite>{r.name}<em>{r.date.split('-').reverse().join('.')} · 2ГИС</em></cite>
+      </blockquote>
+    ))}
+  </div>
+  <p class="rating-line">
+    <span class="rating-val">{String(reviews.rating).replace('.', ',')}</span>
+    <span class="rating-of">на основании {reviews.totalCount} отзывов в 2ГИС</span>
+  </p>
+  <a class="link-out" href={contacts.dgis}><span>Читать все отзывы</span></a>
+</section>
+
+<!-- ─── МАТЕРИАЛЫ ────────────────────────────────── -->
+<section class="sec cream tight" id="guides">
+  <p class="kicker">Материалы</p>
+  <h2 class="display reveal"><span class="ln">Полезное для пациентов</span></h2>
+  <p class="sec-note">Готовятся к публикации. Выходят после проверки врачом.</p>
+  {guides.series.map((s) => (
+    <div class="guide">
+      <p class="rule-label"><span class="rule"></span>{s.title}</p>
+      <ul class="topics">{s.topics.map((t) => <li>{t}</li>)}</ul>
+    </div>
+  ))}
+</section>
+
+<!-- ─── ВОПРОСЫ ──────────────────────────────────── -->
+<section class="sec sand" id="faq">
+  <p class="kicker">Вопросы</p>
+  <h2 class="display reveal"><span class="ln">Частые вопросы</span></h2>
+  <div class="faq">
+    {faq.items.map((f) => (
+      <details>
+        <summary><span>{f.q}</span></summary>
+        {f.a && <p>{f.a}</p>}
+        {f.pendingNote && <p class="pending-inline">{f.pendingNote}</p>}
+      </details>
+    ))}
+  </div>
+</section>
+
+<!-- ─── ЗАПИСЬ ───────────────────────────────────── -->
+<section class="sec dark cta" id="contacts">
+  <figure class="cta-fig">
+    <Photo name="wide-child" alt="Врач и маленькая пациентка" sizes="100vw" />
+  </figure>
+  <div class="cta-body">
+    <p class="kicker light">Запись</p>
+    <h2 class="display light reveal"><span class="ln">Записаться на приём</span></h2>
+    <p class="lede light">Напишите в WhatsApp — администратор подскажет ближайшие свободные окна.</p>
+    <dl class="contacts">
+      <dt>Адрес</dt><dd><span>{contacts.address}<br /><span class="muted">{contacts.city}</span></span></dd>
+      <dt>Телефон</dt><dd><a href={contacts.phoneHref}>{contacts.phoneDisplay}</a></dd>
+      <dt>Instagram</dt><dd><a href={contacts.instagram}>{contacts.instagramHandle}</a></dd>
+    </dl>
+    <div class="actions">
+      <a class="btn btn-solid" href={contacts.whatsapp}>Написать в WhatsApp</a>
+      <a class="btn btn-line" href={contacts.dgis}>Открыть в 2ГИС</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <p>{contacts.doctorName} · {contacts.specialty} · {contacts.city}</p>
+  <p class="muted">Информация на сайте не заменяет очную консультацию.</p>
+</footer>
+
+<a class="sticky-wa" href={contacts.whatsapp}>Написать в WhatsApp</a>
+
+<style>
+:root{
+  --cream:#F4EFE7;
+  --sand:#E9E1D4;
+  --dark:#221D18;
+  --darker:#191411;
+  --ink:#231E19;
+  --ink-soft:#6E6358;
+  --gold:#9C7B4E;
+  --gold-lt:#C4A97E;
+  --line:rgba(35,30,25,.16);
+  --line-light:rgba(244,239,231,.2);
+  --display:'Oranienbaum', Georgia, serif;
+  --sans:'Onest', system-ui, sans-serif;
+  --gut:20px;
+  --maxw:1080px;
+  --col:660px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  margin:0; background:var(--cream); color:var(--ink);
+  font-family:var(--sans); font-size:17px; line-height:1.6; font-weight:300;
+  padding-bottom:88px; overflow-x:hidden;
+}
+figure{margin:0}
+a{color:inherit}
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:100;
+  background:var(--gold); color:#fff; padding:12px 18px;
+}
+.skip:focus{left:0}
+a:focus-visible,summary:focus-visible,.strip:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
+
+/* ── первый экран ───────────────────────────────── */
+/* Первый экран светлый: кадр высокий по тону, фон кремовый —
+   стыка между кадром и фоном практически не видно. */
+.hero{
+  /* Верхний слой — сгенерированный фон. Если файла нет, он просто не
+     загрузится, и останется кремовая бумага: страница не ломается. */
+  background-color:var(--cream);
+  background-image:var(--hero-bg-url), var(--paper-url);
+  background-size:cover, 420px auto;
+  background-position:center, 0 0;
+  background-repeat:no-repeat, repeat;
+  background-blend-mode:normal, multiply;
+  color:var(--ink);
+  display:flex; flex-direction:column;
+  border-bottom:1px solid var(--line);
+}
+.hero-figure{position:relative; height:42svh; min-height:280px; overflow:hidden; order:1}
+/* Маской, а не заливкой: кадр становится прозрачным к краю и пропускает
+   фон насквозь. Заливка дала бы шов поверх текстуры. */
+.hero-figure{
+  -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 58%, rgba(0,0,0,.45) 82%, transparent 100%);
+  mask-image:linear-gradient(to bottom, #000 0%, #000 58%, rgba(0,0,0,.45) 82%, transparent 100%);
+}
+:global(.hero-img){object-position:50% 12%}
+.nav{
+  order:0; position:relative; z-index:2;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px var(--gut); max-width:var(--maxw); margin:0 auto; width:100%;
+}
+.brand{
+  display:inline-flex; align-items:center; min-height:44px;
+  font-family:var(--display); font-size:23px; letter-spacing:.02em;
+  text-decoration:none; color:var(--ink);
+}
+.brand .dot{color:var(--gold)}
+.nav-call{
+  display:inline-flex; flex-direction:column; align-items:flex-end; justify-content:center;
+  min-height:48px; text-decoration:none; white-space:nowrap; gap:2px;
+}
+.nav-call-label{
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+}
+.nav-call-num{font-size:16px; color:var(--ink); letter-spacing:.01em}
+.brand{font-size:26px}
+
+.hero-panel{
+  order:2; position:relative; z-index:2;
+  padding:26px var(--gut) 44px; max-width:var(--maxw); margin:0 auto; width:100%;
+}
+.rule-label{
+  display:flex; align-items:center; gap:12px; margin:0 0 18px;
+  font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold);
+}
+.rule{width:34px; height:1px; background:currentColor; flex:0 0 auto}
+h1{
+  font-family:var(--display); font-weight:400; color:var(--ink);
+  font-size:clamp(40px,11.4vw,76px); line-height:1.0; letter-spacing:.005em;
+  margin:0 0 20px;
+}
+.ln{display:block}
+.ln-gold{color:var(--gold)}
+.hero-sub{font-size:17px; color:var(--ink-soft); margin:0 0 22px; max-width:34ch}
+.hero-note{margin:14px 0 0; font-size:13px; color:var(--ink-soft)}
+
+/* ── действия ───────────────────────────────────── */
+.actions{display:flex; flex-direction:column; gap:11px}
+.btn{
+  display:flex; align-items:center; justify-content:center;
+  min-height:56px; padding:0 26px; text-decoration:none;
+  font-size:13px; letter-spacing:.17em; text-transform:uppercase; font-weight:500;
+}
+/* По умолчанию кнопки светлого контекста — первый экран теперь кремовый. */
+.btn-solid{background:var(--dark); color:var(--cream)}
+.btn-line{background:transparent; color:var(--ink); box-shadow:inset 0 0 0 1px rgba(35,30,25,.3)}
+/* В тёмных секциях те же кнопки переворачиваются. */
+.dark .btn-solid{background:var(--gold-lt); color:#1C1713}
+.dark .btn-line{background:rgba(244,239,231,.06); color:var(--cream); box-shadow:inset 0 0 0 1px rgba(244,239,231,.38)}
+
+/* ── секции ─────────────────────────────────────── */
+.sec{padding:60px var(--gut)}
+.sec > *{max-width:var(--col); margin-left:auto; margin-right:auto}
+.sec.tight{padding-top:10px}
+.cream{
+  background-color:var(--cream);
+  background-image:var(--paper-url);
+  background-size:420px auto;
+  background-blend-mode:multiply;
+}
+.sand{
+  background-color:var(--sand);
+  background-image:var(--paper-url);
+  background-size:420px auto;
+  background-blend-mode:multiply;
+}
+.dark{background:var(--dark); color:var(--cream)}
+.dark-cont{background:var(--dark)}
+.kicker{
+  margin:0 0 14px; font-size:12px; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--gold); font-weight:500;
+}
+.kicker.light{color:var(--gold-lt)}
+.display{
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(32px,8vw,52px); line-height:1.06; letter-spacing:.005em;
+  margin:0 0 20px;
+}
+.display.light{color:var(--cream)}
+.lede{font-size:18px; color:var(--ink-soft); margin:0 0 30px; max-width:46ch}
+.lede.light{color:#C6BAA9}
+.prose{font-size:16px; margin:0 0 20px; color:var(--ink-soft)}
+.sec-note{margin:-10px 0 24px; font-size:15px; color:var(--ink-soft); font-style:italic}
+.micro{margin:20px auto 0; font-size:13px; color:var(--ink-soft); font-style:italic}
+
+/* Орнаментальный разделитель — только между кремовыми разделами. */
+.orn{
+  border:0; margin:0; height:48px;
+  background-color:var(--cream);
+  background-image:var(--divider-url), var(--paper-url);
+  background-size:300px auto, 420px auto;
+  background-position:center center, 0 0;
+  background-repeat:no-repeat, repeat;
+  background-blend-mode:normal, multiply;
+}
+
+/* ── о враче ────────────────────────────────────── */
+.split{display:grid; grid-template-columns:1fr; gap:24px}
+.split-fig{aspect-ratio:3/4; overflow:hidden}
+.sig{
+  margin:0; font-family:var(--display); font-size:22px; line-height:1.3;
+  padding-top:18px; border-top:1px solid var(--line);
+}
+.sig em{
+  display:block; font-family:var(--sans); font-style:normal;
+  font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--gold); margin-top:8px;
+}
+
+/* ── принципы ───────────────────────────────────── */
+.pillars{display:grid; grid-template-columns:1fr}
+.pillar{padding:24px 0; border-top:1px solid var(--line)}
+.pillar:last-child{border-bottom:1px solid var(--line)}
+.pillar-head{display:flex; align-items:center; gap:12px; margin:0 0 12px}
+.pillar-ico{width:44px; height:44px; flex:0 0 auto; display:block}
+.pillar-no{font-size:12px; letter-spacing:.2em; color:var(--gold)}
+.pillar h3{font-family:var(--display); font-weight:400; font-size:25px; margin:0 0 8px; letter-spacing:.005em}
+.pillar p{margin:0; font-size:15px; color:var(--ink-soft)}
+
+/* ── широкий акцент ─────────────────────────────── */
+.band{position:relative; background:var(--dark)}
+/* На телефоне цитата стоит под кадром: поверх фигуры она читалась плохо
+   и закрывала врача. На десктопе места хватает, там наложение остаётся. */
+.band-fig{aspect-ratio:4/3; overflow:hidden}
+.band-quote{
+  position:static; margin:0; z-index:2;
+  padding:28px var(--gut) 36px; max-width:var(--col); margin-left:auto; margin-right:auto;
+}
+.band-quote p{
+  font-family:var(--display); font-weight:400; color:var(--cream);
+  font-size:clamp(23px,6.2vw,38px); line-height:1.2; margin:0 0 14px;
+}
+.band-quote cite{
+  font-style:normal; font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--gold-lt);
+}
+
+/* ── направления ────────────────────────────────── */
+.entries{list-style:none; margin:0; padding:0}
+.entries li{padding:22px 0; border-top:1px solid var(--line)}
+.entries li:last-child{border-bottom:1px solid var(--line)}
+.entry-tag{
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold); margin:0 0 9px;
+}
+.entry-tag img{width:30px; height:30px; display:block; margin-left:-3px}
+.entries h3{font-family:var(--display); font-weight:400; font-size:25px; margin:0 0 6px}
+.entries p{margin:0; font-size:15px; color:var(--ink-soft)}
+
+/* ── приём ──────────────────────────────────────── */
+.duo{display:grid; grid-template-columns:1fr; gap:22px}
+.duo-fig{aspect-ratio:4/3; overflow:hidden}
+.duo-body h3{font-family:var(--display); font-weight:400; font-size:27px; margin:0 0 12px}
+.duo-body p{margin:0; font-size:15px; color:#C6BAA9}
+.strip-label{margin:44px 0 0}
+
+/* ── лента кадров ───────────────────────────────── */
+.filmstrip{padding:16px 0 56px}
+.strip{
+  display:flex; gap:12px; overflow-x:auto; overflow-y:hidden;
+  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+  padding:0 var(--gut) 14px; scrollbar-width:thin;
+  scrollbar-color:var(--gold) transparent;
+}
+.strip::-webkit-scrollbar{height:4px}
+.strip::-webkit-scrollbar-thumb{background:var(--gold); border-radius:4px}
+.strip::-webkit-scrollbar-track{background:rgba(244,239,231,.1)}
+.strip-item{
+  flex:0 0 68vw; max-width:300px;
+  scroll-snap-align:center; margin:0; overflow:hidden;
+}
+.strip-item :global(img){aspect-ratio:3/4; object-fit:cover}
+
+
+/* ── перечень ───────────────────────────────────── */
+.checks{list-style:none; margin:0; padding:0}
+.checks li{
+  padding:13px 0 13px 28px; border-bottom:1px solid var(--line);
+  font-size:16px; position:relative;
+}
+.checks li::before{content:''; position:absolute; left:2px; top:22px; width:11px; height:1px; background:var(--gold)}
+
+/* ── цены ───────────────────────────────────────── */
+.price-list{border-top:1px solid var(--line)}
+.price-head{margin:24px 0 4px; font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold)}
+.price-head.mt{margin-top:36px}
+.prow{
+  display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+  padding:15px 0; border-bottom:1px solid var(--line);
+}
+.pname{display:flex; flex-direction:column; font-size:16px}
+.pname em{font-style:normal; font-size:13px; color:var(--ink-soft); margin-top:3px}
+.pval{
+  font-family:var(--display); font-size:28px; white-space:nowrap;
+  font-variant-numeric:tabular-nums; letter-spacing:.01em;
+}
+
+/* ── отзывы ─────────────────────────────────────── */
+.pending-flag{
+  margin:-8px 0 26px; padding:12px 15px; font-size:13px;
+  border:1px solid var(--gold); color:var(--gold);
+}
+.quotes{display:grid}
+.quote{margin:0; padding:26px 0; border-top:1px solid var(--line)}
+.quote:last-of-type{border-bottom:1px solid var(--line)}
+.quote p{margin:0 0 14px; font-family:var(--display); font-weight:400; font-size:22px; line-height:1.4}
+.quote cite{font-style:normal; display:flex; flex-direction:column; font-size:14px}
+.quote cite em{font-style:normal; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-top:5px}
+.sample-tag{display:inline-block; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin:0 0 10px}
+.rating-line{
+  display:flex; align-items:baseline; gap:12px; margin:26px 0 0;
+}
+.rating-val{
+  font-family:var(--display); font-size:38px; line-height:1; color:var(--ink);
+}
+.rating-of{font-size:14px; color:var(--ink-soft)}
+.link-out{
+  display:inline-flex; align-items:center; min-height:44px; margin-top:10px;
+  font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+  text-decoration:none; font-weight:500;
+}
+.link-out span{border-bottom:1px solid currentColor; padding-bottom:3px}
+
+/* ── материалы / faq ────────────────────────────── */
+.guide{margin:0 auto 32px}
+.topics{list-style:none; margin:0; padding:0}
+.topics li{padding:12px 0; border-bottom:1px solid var(--line); font-size:16px; color:var(--ink-soft)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  cursor:pointer; padding:19px 0; font-size:17px; list-style:none;
+  display:flex; align-items:flex-start; gap:14px; min-height:44px;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'+'; color:var(--gold); flex:0 0 auto; line-height:1.4}
+.faq details[open] summary::before{content:'–'}
+.faq p{margin:0 0 18px; padding-left:28px; font-size:15px; color:var(--ink-soft)}
+.pending-inline{font-style:italic; color:var(--gold)}
+
+/* ── запись ─────────────────────────────────────── */
+.cta{position:relative; padding:0; overflow:hidden}
+.cta-fig{position:absolute; inset:0}
+.cta-fig::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to bottom, rgba(25,20,17,.62) 0%, rgba(25,20,17,.9) 55%, var(--dark) 100%);
+}
+.cta-body{position:relative; z-index:2; padding:60px var(--gut); max-width:var(--col); margin:0 auto}
+/* Подпись и значение — соседние ячейки одной строки сетки: строка задаёт
+   им общую высоту, центрирование по вертикали делает остальное.
+   Раньше подпись липла к верху, а ссылка центрировалась в своих 44px,
+   и строки разъезжались. */
+.contacts{
+  margin:0 0 28px; display:grid; grid-template-columns:116px 1fr;
+  column-gap:24px; border-top:1px solid rgba(244,239,231,.16);
+}
+.contacts dt,
+.contacts dd{
+  display:flex; align-items:center; min-height:56px; padding:10px 0;
+  border-bottom:1px solid rgba(244,239,231,.16); margin:0;
+}
+.contacts dt{
+  font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold-lt); line-height:1.3;
+}
+.contacts dd{font-size:16px; line-height:1.45}
+/* flex съедает <br>, поэтому содержимое ячейки лежит в одном блоке */
+.contacts dd > span{display:block}
+/* Ссылка забирает и отступы ячейки, иначе цель нажатия недобирает до 44px. */
+.contacts dd a{
+  align-self:stretch; display:flex; align-items:center;
+  margin:-10px 0; padding:10px 0;
+}
+.dark .muted{color:#9A8D7E}
+.foot{background:var(--darker); color:#9A8D7E; padding:28px var(--gut) 36px; font-size:13px}
+.foot p{margin:0 0 5px; max-width:var(--col); margin-left:auto; margin-right:auto}
+
+/* ── закреплённая кнопка ────────────────────────── */
+.sticky-wa{
+  position:fixed; left:14px; right:14px; bottom:14px; z-index:30;
+  display:flex; align-items:center; justify-content:center;
+  min-height:56px; background:var(--dark); color:var(--cream); text-decoration:none;
+  font-size:13px; letter-spacing:.17em; text-transform:uppercase; font-weight:500;
+  box-shadow:0 10px 30px rgba(25,20,17,.28);
+}
+
+/* ── появление на скролле ───────────────────────── */
+.ln{display:block}
+/* Прячем только когда JS жив и сможет показать обратно. */
+:global(html.js) .reveal .ln{
+  clip-path:inset(0 0 110% 0);
+  transform:translateY(.12em);
+  transition:clip-path .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
+}
+:global(html.js) .reveal .ln:nth-child(2){transition-delay:.09s}
+:global(html.js) .reveal .ln:nth-child(3){transition-delay:.18s}
+:global(html.js) .reveal .ln:nth-child(4){transition-delay:.27s}
+:global(html.js) .reveal.is-in .ln{clip-path:inset(-.25em 0 -.25em 0); transform:none}
+
+/* ── десктоп ────────────────────────────────────── */
+@media (min-width:900px){
+  :root{--gut:44px; --col:700px}
+  body{font-size:18px; padding-bottom:0}
+
+  .hero{min-height:92svh; display:grid; grid-template-columns:1fr 46vw; grid-template-rows:auto 1fr}
+  /* Кадр заполняет колонку, а не задаёт высоту: вертикальный снимок
+     при ширине колонки давал 993px и выталкивал низ героя за экран. */
+  .hero-figure{
+    grid-column:2; grid-row:1 / 3; order:0;
+    position:relative; height:auto; min-height:0; overflow:hidden;
+  }
+  :global(.hero-img){
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  }
+  .hero{border-bottom:0}
+  .hero-figure{
+    -webkit-mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.35) 12%, rgba(0,0,0,.85) 30%, #000 48%);
+    mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.35) 12%, rgba(0,0,0,.85) 30%, #000 48%);
+  }
+  :global(.hero-img){object-position:50% 15%}
+    .nav{
+    grid-column:1; grid-row:1; padding:22px var(--gut) 20px; max-width:none;
+    border-bottom:1px solid var(--line); margin-right:-1px;
+  }
+  .hero-panel{
+    grid-column:1; grid-row:2; align-self:center; order:0;
+    padding:0 40px 40px var(--gut); max-width:none;
+  }
+  #about{padding-top:68px}
+  h1{font-size:clamp(52px,5.4vw,82px)}
+  .hero-sub{font-size:19px}
+  .actions{flex-direction:row; flex-wrap:wrap}
+  .btn{flex:0 0 auto; min-width:250px}
+
+  .sec{padding:96px var(--gut)}
+  .display{font-size:clamp(40px,4.4vw,58px)}
+  .split{grid-template-columns:340px 1fr; gap:48px; align-items:center}
+  .pillars{grid-template-columns:1fr 1fr; gap:0 52px}
+  .band-fig{aspect-ratio:21/9}
+  .band-fig::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to bottom, rgba(25,20,17,.1) 0%, rgba(25,20,17,.72) 68%, var(--dark) 100%);
+  }
+  .band-quote{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:0 var(--gut) 56px;
+  }
+  .entries{columns:2; column-gap:52px}
+  .entries li{break-inside:avoid}
+  .checks{columns:2; column-gap:52px}
+  .checks li{break-inside:avoid}
+  .duo{grid-template-columns:1fr 1fr; gap:40px; align-items:center}
+  .duo-fig{aspect-ratio:1}
+  .strip-item{flex-basis:300px}
+  .quotes{grid-template-columns:1fr 1fr; gap:0 52px}
+  .quote{break-inside:avoid}
+  .cta-body{padding:120px var(--gut)}
+  .sticky-wa{display:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  :global(html.js) .reveal .ln{clip-path:none !important; transform:none !important; transition:none}
+  :global(.hero-img){transform:none; animation:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .btn{transition:opacity .2s ease, transform .2s ease}
+  .btn:hover{opacity:.9; transform:translateY(-1px)}
+  :global(.strip-item img){transition:transform .5s cubic-bezier(.22,1,.36,1)}
+  .strip-item:hover :global(img){transform:scale(1.03)}
+  :global(.hero-img){animation:drift 22s ease-in-out infinite alternate}
+  @keyframes drift{from{transform:scale(1.04)}to{transform:scale(1.11)}}
+}
+</style>
+
+<script>
+  // Появление заголовков. Контент виден по умолчанию: класс вешается только если JS жив.
+  const targets = document.querySelectorAll('.reveal');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0.15 }
+    );
+    targets.forEach((t) => io.observe(t));
+  } else {
+    targets.forEach((t) => t.classList.add('is-in'));
+  }
+
+</script>
+</body>
+</html>

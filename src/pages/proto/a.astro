@@ -1,0 +1,490 @@
+---
+import { contacts, services, guides, reviews, faq, prices, byGroup, hero, about, complaintsByRegion } from '../../lib/site.js';
+const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+---
+
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{contacts.doctorName} — ЛОР-врач в Астане · Вариант A</title>
+<meta name="description" content={hero.subtitle} />
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Alegreya+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<header class="topbar">
+  <span class="brand">Lor<span class="dot">.</span>roza</span>
+  <span class="topbar-mid">Оториноларингология</span>
+  <span class="topbar-end">Астана</span>
+</header>
+
+<!-- I. ТИТУЛЬНАЯ ПЛАСТИНА -->
+<section class="plate hero">
+  <div class="plate-no">{roman[0]}</div>
+
+  <h1>{hero.title}</h1>
+  <p class="sub">{hero.subtitle}</p>
+
+  <figure class="portrait">
+    <div class="frame portrait-frame">
+      <span class="ph-mark">фото врача</span>
+      <span class="ph-path">doctor/portrait.jpg</span>
+      <span class="ph-hint">вертикальный портрет</span>
+    </div>
+    <figcaption class="leader">
+      <span class="tick"></span>
+      <span class="leader-txt">{contacts.doctorName}<br /><em>практикует с {contacts.practiceSince} года</em></span>
+    </figcaption>
+  </figure>
+
+  <p class="line">{hero.line}</p>
+
+  <div class="actions">
+    <a class="btn btn-primary" href={contacts.whatsapp}>Написать в WhatsApp</a>
+    <a class="btn btn-ghost" href={contacts.whatsappBooking}>Записаться на приём</a>
+  </div>
+  <p class="micro">{contacts.scheduleNote}</p>
+</section>
+
+<!-- II. О ВРАЧЕ -->
+<section class="plate" id="about">
+  <div class="plate-no">{roman[1]}</div>
+  <h2 class="sec-title">О враче</h2>
+  <p class="prose">{about}</p>
+  <div class="region-head"><span class="region-name">что входит в консультацию</span><span class="rule"></span></div>
+  <ul class="specimen">
+    {services.consultationIncludes.map((s, i) => (
+      <li><span class="sp-no">{String(i + 1).padStart(2, '0')}</span><span class="sp-txt">{s}</span></li>
+    ))}
+  </ul>
+</section>
+
+<!-- III. ПОЧЕМУ ВЫБИРАЮТ -->
+<section class="plate tinted" id="why">
+  <div class="plate-no">{roman[2]}</div>
+  <h2 class="sec-title">Почему выбирают</h2>
+  <ol class="why">
+    {services.whyMe.map((w, i) => (
+      <li>
+        <div class="why-head"><h3>{w.title}</h3><span class="rule"></span><span class="why-no">{roman[i]}</span></div>
+        <p>{w.text}</p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<!-- IV. С ЧЕМ ОБРАЩАЮТСЯ — порядок сверху вниз по анатомии -->
+<section class="plate" id="complaints">
+  <div class="plate-no">{roman[3]}</div>
+  <h2 class="sec-title">С чем обращаются</h2>
+  <p class="sec-note">Порядок сверху вниз: ухо, нос, горло.</p>
+  {complaintsByRegion.map((group) => (
+    <div class="region">
+      <div class="region-head"><span class="region-name">{group.region}</span><span class="rule"></span></div>
+      {group.items.map((c) => (
+        <article class="entry">
+          <h3>{c.title}</h3>
+          <p>{c.note}</p>
+        </article>
+      ))}
+    </div>
+  ))}
+</section>
+
+<!-- V. ЦЕНЫ — число как предмет -->
+<section class="plate tinted" id="prices">
+  <div class="plate-no">{roman[4]}</div>
+  <h2 class="sec-title">Услуги и цены</h2>
+
+  <div class="tariffs">
+    {byGroup('приём').map((p) => (
+      <div class="tariff">
+        <div class="tariff-num">{p.amount}<span class="cur">{p.currency}</span></div>
+        <div class="tariff-body">
+          <h3>{p.title}</h3>
+          {p.meta && <p class="tariff-meta">{p.meta}</p>}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="region-head manip"><span class="region-name">манипуляции</span><span class="rule"></span></div>
+  <div class="tariffs small">
+    {byGroup('манипуляции').map((p) => (
+      <div class="tariff">
+        <div class="tariff-num">{p.amount}<span class="cur">{p.currency}</span></div>
+        <div class="tariff-body">
+          <h3>{p.title}</h3>
+          {p.meta && <p class="tariff-meta">{p.meta}</p>}
+        </div>
+      </div>
+    ))}
+  </div>
+  <p class="micro">{prices.note}</p>
+</section>
+
+<!-- VI. КАК ПРОХОДИТ ПРИЁМ -->
+<section class="plate" id="visit">
+  <div class="plate-no">{roman[5]}</div>
+  <h2 class="sec-title">Как проходит приём</h2>
+  <div class="prose">
+    <p>Приём длится до тридцати минут. Осмотр уха, носа и горла, при необходимости — эндоскопия. Дальше разбираем, что происходит, и составляем план: что делать, чем лечить и зачем нужен каждый пункт.</p>
+  </div>
+  <div class="region-head"><span class="region-name">детям</span><span class="rule"></span></div>
+  <p class="kids-text">Ребёнок плачет на осмотре чаще не от боли, а от страха. Осмотр идёт в темпе ребёнка: сначала знакомство с инструментом, потом сам осмотр. Годовалый может перенести его спокойно, а десятилетний — испугаться, и это тоже нормально.</p>
+  <div class="office-strip">
+    <div class="frame wide">
+      <span class="ph-mark">кабинет</span>
+      <span class="ph-path">office/room.jpg</span>
+    </div>
+    <div class="frame wide">
+      <span class="ph-mark">оборудование</span>
+      <span class="ph-path">office/endoscope.jpg</span>
+    </div>
+  </div>
+</section>
+
+<!-- VII. ОТЗЫВЫ -->
+<section class="plate tinted" id="reviews">
+  <div class="plate-no">{roman[6]}</div>
+  <h2 class="sec-title">Отзывы</h2>
+  {reviews.pending && <p class="pending-flag">Образцы разметки. Настоящие отзывы переносятся из 2ГИС вручную.</p>}
+  <div class="reviews">
+    {reviews.items.map((r) => (
+      <blockquote class={r.sample ? 'review is-sample' : 'review'}>
+        {r.sample && <span class="sample-tag">образец</span>}
+        <p>{r.text}</p>
+        <cite>{r.name}</cite>
+      </blockquote>
+    ))}
+  </div>
+  <a class="link-out" href={contacts.dgis}><span>Все отзывы в 2ГИС →</span></a>
+</section>
+
+<!-- VIII. МАТЕРИАЛЫ -->
+<section class="plate" id="guides">
+  <div class="plate-no">{roman[7]}</div>
+  <h2 class="sec-title">Полезные материалы</h2>
+  <p class="sec-note">Готовятся к публикации. Выходят после проверки врачом.</p>
+  {guides.series.map((s) => (
+    <div class="region">
+      <div class="region-head"><span class="region-name">{s.title}</span><span class="rule"></span></div>
+      <ul class="topics">{s.topics.map((t) => <li>{t}</li>)}</ul>
+    </div>
+  ))}
+</section>
+
+<!-- IX. FAQ -->
+<section class="plate tinted" id="faq">
+  <div class="plate-no">{roman[8]}</div>
+  <h2 class="sec-title">Частые вопросы</h2>
+  <div class="faq">
+    {faq.items.map((f) => (
+      <details>
+        <summary><span>{f.q}</span></summary>
+        {f.a && <p>{f.a}</p>}
+        {f.pendingNote && <p class="pending-inline">{f.pendingNote}</p>}
+      </details>
+    ))}
+  </div>
+</section>
+
+<!-- X. КОНТАКТЫ -->
+<section class="plate" id="contacts">
+  <div class="plate-no">{roman[9]}</div>
+  <h2 class="sec-title">Контакты</h2>
+  <dl class="contacts">
+    <dt>Адрес</dt><dd>{contacts.address}<br /><span class="muted">{contacts.city}</span></dd>
+    <dt>Запись</dt><dd>{contacts.scheduleNote}</dd>
+    <dt>Телефон</dt><dd><a href={contacts.phoneHref}>{contacts.phoneDisplay}</a></dd>
+    <dt>Instagram</dt><dd><a href={contacts.instagram}>{contacts.instagramHandle}</a></dd>
+  </dl>
+  <div class="actions">
+    <a class="btn btn-primary" href={contacts.whatsappBooking}>Записаться на приём</a>
+    <a class="btn btn-ghost" href={contacts.dgis}>Открыть в 2ГИС</a>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>{contacts.doctorName} · {contacts.specialty} · {contacts.city}</p>
+  <p class="muted">Информация на сайте не заменяет очную консультацию.</p>
+</footer>
+
+<a class="sticky-wa" href={contacts.whatsapp}>
+  <span class="wa-dot"></span>Написать в WhatsApp
+</a>
+
+<style>
+:root{
+  --ink:#08211F;
+  --ink-2:#0C3230;
+  --ink-3:#12403D;
+  --bone:#EDE3CF;
+  --bone-dim:#BFB49C;
+  --verm:#D4492F;
+  --ochre:#D4A34A;
+  --tissue:#E09B82;
+  --serif:'Alegreya', Georgia, serif;
+  --caps:'Alegreya Sans SC', system-ui, sans-serif;
+  --gut:20px;
+  --maxw:640px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--bone);
+  font-family:var(--serif);
+  font-size:18px;
+  line-height:1.55;
+  padding-bottom:88px;
+  overflow-x:hidden;
+}
+a{color:inherit}
+
+/* ── верхняя планка ─────────────────────────────── */
+.topbar{
+  display:flex; align-items:center; gap:10px;
+  padding:10px var(--gut);
+  border-bottom:1px solid rgba(237,227,207,.18);
+  font-family:var(--caps); font-size:13px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--bone-dim);
+  position:sticky; top:0; background:var(--ink); z-index:20;
+}
+.brand{color:var(--bone); letter-spacing:.06em; font-weight:700}
+.brand .dot{color:var(--verm)}
+.topbar-mid{display:none}
+.topbar-end{margin-left:auto}
+
+/* ── пластина: непрерывное поле, не карточка ─────
+   Подложка тянется во всю ширину сама, колонка держится
+   внутренним ограничением. Никаких отрицательных vw —
+   они давали горизонтальное переполнение. */
+.plate{
+  position:relative;
+  padding:44px var(--gut) 40px;
+  border-top:1px solid rgba(237,227,207,.14);
+}
+.plate > *{max-width:var(--maxw); margin-left:auto; margin-right:auto}
+.plate.hero{border-top:0}
+.plate.tinted{background:var(--ink-2)}
+.plate-no{
+  position:absolute; top:16px;
+  right:max(var(--gut), calc((100% - var(--maxw)) / 2));
+  font-family:var(--caps); font-size:12px; letter-spacing:.22em;
+  color:var(--ochre); opacity:.8;
+}
+
+/* ── титул ──────────────────────────────────────── */
+.hero{padding-top:30px}
+h1{
+  font-size:clamp(34px,8.6vw,52px); line-height:1.06; font-weight:500;
+  margin:0 0 16px; letter-spacing:-.015em;
+}
+.sub{font-size:clamp(18px,4.4vw,21px); margin:0 0 12px; color:#E3D8C1}
+.line{
+  font-size:16px; margin:0 0 26px; color:var(--bone-dim);
+  padding-left:14px; border-left:2px solid var(--verm);
+}
+
+/* ── пластины-заглушки под фото ─────────────────
+   На телефоне пластина идёт узкой врезкой рядом с подписью:
+   во всю ширину она съедала экран и выталкивала кнопку за сгиб. */
+.portrait{
+  display:grid; grid-template-columns:130px 1fr; gap:16px;
+  align-items:end; margin:0 0 26px;
+}
+.frame{
+  position:relative;
+  border:1px solid var(--bone-dim);
+  outline:1px solid rgba(237,227,207,.16); outline-offset:5px;
+  background:
+    repeating-linear-gradient(135deg, rgba(237,227,207,.05) 0 2px, transparent 2px 9px),
+    var(--ink-3);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  text-align:center; padding:10px;
+}
+.portrait-frame{aspect-ratio:3/4; width:100%}
+.frame.wide{aspect-ratio:4/3}
+.ph-mark{font-family:var(--caps); font-size:13px; letter-spacing:.2em; text-transform:uppercase; color:var(--ochre)}
+.ph-path{font-family:var(--caps); font-size:13px; letter-spacing:.06em; color:var(--bone-dim)}
+.ph-hint{font-size:13px; font-style:italic; color:var(--bone-dim); opacity:.75}
+
+/* выносная линия — приём анатомического атласа */
+.leader{display:flex; align-items:flex-start; margin:0 0 6px}
+.tick{flex:0 0 22px; height:1px; background:var(--verm); margin-top:11px; position:relative}
+.tick::before{content:''; position:absolute; left:0; top:-2px; width:5px; height:5px; border-radius:50%; background:var(--verm)}
+.leader-txt{
+  font-family:var(--caps); font-size:14px; letter-spacing:.06em; line-height:1.5;
+  padding-left:12px; color:#E3D8C1;
+}
+.leader-txt em{color:var(--bone-dim); font-style:italic; letter-spacing:.02em}
+
+/* ── действия ───────────────────────────────────── */
+.actions{display:flex; flex-direction:column; gap:10px; margin:0 0 14px}
+.btn{
+  display:flex; align-items:center; justify-content:center;
+  min-height:52px; padding:0 22px; text-decoration:none;
+  font-family:var(--caps); font-size:16px; letter-spacing:.09em; text-transform:uppercase;
+}
+.btn-primary{background:var(--verm); color:#FFF4EC; border:1px solid var(--verm)}
+.btn-ghost{background:transparent; color:var(--bone); border:1px solid var(--bone-dim)}
+.btn:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--ochre); outline-offset:3px}
+.micro{font-family:var(--caps); font-size:13px; letter-spacing:.05em; color:var(--bone-dim); margin:0}
+
+/* ── разделы ────────────────────────────────────── */
+.sec-title{
+  font-family:var(--caps); font-size:14px; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--ochre); font-weight:500; margin:0 0 18px;
+}
+.sec-note{font-size:15px; font-style:italic; color:var(--bone-dim); margin:-10px 0 22px}
+.prose{font-size:18px; line-height:1.62; margin:0 0 24px; color:#E3D8C1}
+.prose p{margin:0 0 14px}
+
+.specimen{list-style:none; margin:0; padding:0; border-top:1px solid rgba(237,227,207,.14)}
+.specimen li{display:flex; gap:14px; padding:9px 0; border-bottom:1px solid rgba(237,227,207,.1)}
+.sp-no{font-family:var(--caps); font-size:13px; letter-spacing:.1em; color:var(--verm); padding-top:4px; flex:0 0 auto}
+.sp-txt{font-size:16px; color:#E3D8C1}
+
+/* ── почему выбирают ────────────────────────────── */
+.why{list-style:none; margin:0; padding:0}
+.why li{padding:0 0 22px; margin:0 0 22px; border-bottom:1px solid rgba(237,227,207,.12)}
+.why li:last-child{border-bottom:0; padding-bottom:0; margin-bottom:0}
+.why-head{display:flex; align-items:center; gap:12px; margin:0 0 8px}
+.why-no{font-family:var(--caps); font-size:13px; letter-spacing:.18em; color:var(--verm); flex:0 0 auto}
+.rule{flex:1 1 auto; height:1px; background:rgba(237,227,207,.22); min-width:14px}
+.why-head h3{font-size:21px; font-weight:500; margin:0; flex:0 0 auto}
+.why li p{margin:0; color:var(--bone-dim); font-size:16px}
+
+/* ── обращения ──────────────────────────────────── */
+.region{margin:0 0 26px}
+.region:last-child{margin-bottom:0}
+.region-head{display:flex; align-items:center; gap:12px; margin:0 0 14px}
+.region-name{
+  font-family:var(--caps); font-size:13px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--tissue); flex:0 0 auto;
+}
+.entry{padding:0 0 14px; margin:0 0 14px; border-bottom:1px solid rgba(237,227,207,.1)}
+.entry:last-child{border-bottom:0; margin-bottom:0}
+.entry h3{font-size:19px; font-weight:500; margin:0 0 4px}
+.entry p{margin:0; font-size:16px; color:var(--bone-dim)}
+
+/* ── цены: число как предмет ────────────────────── */
+.tariffs{margin:0 0 20px}
+.tariff{padding:16px 0; border-bottom:1px solid rgba(237,227,207,.14)}
+.tariff-num{
+  font-size:clamp(38px,10vw,54px); line-height:1; font-weight:500;
+  color:var(--bone); font-variant-numeric:tabular-nums; letter-spacing:-.02em;
+}
+.cur{font-size:.42em; color:var(--ochre); margin-left:.18em; vertical-align:.5em}
+.tariffs.small .tariff-num{font-size:clamp(28px,7vw,36px)}
+.tariff-body h3{font-size:17px; font-weight:400; margin:6px 0 0; color:#E3D8C1}
+.tariff-meta{margin:2px 0 0; font-family:var(--caps); font-size:13px; letter-spacing:.05em; color:var(--bone-dim)}
+.region-head.manip{margin-top:26px}
+
+/* ── дети / кабинет ─────────────────────────────── */
+.kids-text{margin:0 0 20px; color:var(--bone-dim); font-size:16px}
+.office-strip{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+
+/* ── отзывы ─────────────────────────────────────── */
+.pending-flag{
+  font-family:var(--caps); font-size:13px; letter-spacing:.06em; color:var(--ochre);
+  border:1px dashed rgba(212,163,74,.5); padding:9px 12px; margin:-6px 0 22px;
+}
+.reviews{display:grid; gap:16px}
+.review{
+  margin:0; padding:18px 16px 14px;
+  border:1px solid rgba(237,227,207,.16);
+  background:rgba(237,227,207,.03); position:relative;
+}
+.review.is-sample{border-style:dashed}
+.sample-tag{
+  position:absolute; top:-9px; left:12px; background:var(--ink-2); padding:0 7px;
+  font-family:var(--caps); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ochre);
+}
+.review p{margin:0 0 10px; font-size:17px; font-style:italic; color:#E3D8C1}
+.review cite{font-family:var(--caps); font-style:normal; font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--bone-dim)}
+.link-out{
+  display:inline-flex; align-items:center; min-height:44px; margin-top:12px;
+  font-family:var(--caps); font-size:15px; letter-spacing:.08em; color:var(--ochre);
+  text-decoration:none;
+}
+.link-out span{border-bottom:1px solid currentColor; padding-bottom:2px}
+
+/* ── материалы ──────────────────────────────────── */
+.topics{list-style:none; margin:0; padding:0}
+.topics li{
+  padding:8px 0 8px 18px; border-bottom:1px solid rgba(237,227,207,.1);
+  font-size:16px; color:#E3D8C1; position:relative;
+}
+.topics li::before{content:''; position:absolute; left:0; top:17px; width:8px; height:1px; background:var(--verm)}
+
+/* ── faq ────────────────────────────────────────── */
+.faq details{border-bottom:1px solid rgba(237,227,207,.14)}
+.faq summary{
+  cursor:pointer; padding:15px 0; font-size:18px; list-style:none;
+  display:flex; align-items:flex-start; gap:12px; min-height:44px;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'+'; color:var(--verm); font-family:var(--caps); flex:0 0 auto; line-height:1.35}
+.faq details[open] summary::before{content:'–'}
+.faq p{margin:0 0 15px; padding-left:24px; font-size:16px; color:var(--bone-dim)}
+.pending-inline{font-style:italic; color:var(--ochre)}
+
+/* ── контакты ───────────────────────────────────── */
+.contacts{margin:0 0 24px; display:grid; grid-template-columns:auto 1fr; gap:12px 18px}
+.contacts dt{font-family:var(--caps); font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--bone-dim); padding-top:4px}
+.contacts dd{margin:0; font-size:17px; color:#E3D8C1}
+.contacts a{
+  display:inline-flex; align-items:center; min-height:44px;
+  color:var(--bone); text-underline-offset:3px;
+}
+.muted{color:var(--bone-dim)}
+
+/* ── подвал ─────────────────────────────────────── */
+.foot{
+  max-width:var(--maxw); margin:0 auto; padding:28px var(--gut) 34px;
+  border-top:1px solid rgba(237,227,207,.14);
+  font-family:var(--caps); font-size:13px; letter-spacing:.05em; color:var(--bone-dim);
+}
+.foot p{margin:0 0 5px}
+
+/* ── закреплённая кнопка ────────────────────────── */
+.sticky-wa{
+  position:fixed; left:12px; right:12px; bottom:12px; z-index:30;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  min-height:56px; background:var(--verm); color:#FFF4EC; text-decoration:none;
+  font-family:var(--caps); font-size:16px; letter-spacing:.09em; text-transform:uppercase;
+  box-shadow:0 8px 28px rgba(0,0,0,.5);
+}
+.wa-dot{width:8px; height:8px; border-radius:50%; background:#FFF4EC}
+
+/* ── десктоп ────────────────────────────────────── */
+@media (min-width:768px){
+  :root{--gut:40px; --maxw:880px}
+  body{font-size:19px; padding-bottom:0}
+  .topbar-mid{display:block; letter-spacing:.2em}
+  .hero{padding-top:56px}
+  .portrait{display:grid; grid-template-columns:260px 1fr; gap:28px; align-items:end}
+  .leader{align-self:end; padding-bottom:8px; margin-top:0}
+  .actions{flex-direction:row}
+  .btn{flex:0 0 auto; min-width:260px}
+  .tariff{display:grid; grid-template-columns:210px 1fr; align-items:baseline; gap:24px}
+  .tariff-body h3{margin-top:0}
+  .reviews{grid-template-columns:1fr 1fr}
+  .sticky-wa{display:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .btn{transition:background-color .18s ease}
+  .btn-ghost:hover{background:rgba(237,227,207,.08)}
+  .btn-primary:hover{background:#B8371E}
+}
+</style>
+</body>
+</html>
