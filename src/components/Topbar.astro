@@ -20,36 +20,35 @@ const navLinks = [
   <div class="topbar-in">
     <a class="brand" href={base}>Lor<span class="dot">.</span>roza</a>
 
-    <div class="reach">
-      <a class="nav-call" href={contacts.phoneHref}>
-        <span class="nav-call-label">Запись по телефону</span>
-        <span class="nav-call-num">{contacts.phoneDisplay}</span>
+    <div class="reach" role="group" aria-label="Связаться с врачом">
+      <a href={contacts.phoneHref} aria-label={`Позвонить: ${contacts.phoneDisplay}`} title="Позвонить">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M8 3.6H5.8a2.1 2.1 0 0 0-2.1 2.3 15.6 15.6 0 0 0 14.4 14.4 2.1 2.1 0 0 0 2.3-2.1v-2.1a1.4 1.4 0 0 0-1.2-1.4l-2.6-.4a1.4 1.4 0 0 0-1.4.6l-.6 1a11.9 11.9 0 0 1-4.8-4.8l1-.6a1.4 1.4 0 0 0 .6-1.4l-.4-2.6A1.4 1.4 0 0 0 8 3.6Z" />
+        </svg>
+      </a>
+
+      <a href={contacts.whatsapp} aria-label="Написать в WhatsApp" title="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M12 3.2a8.8 8.8 0 0 0-7.5 13.4L3.2 20.8l4.3-1.3A8.8 8.8 0 1 0 12 3.2Z" />
+          <path d="M9.1 8.3c.2-.4.4-.4.7-.4h.5c.2 0 .4 0 .6.4l.6 1.5c.1.3 0 .4-.1.6l-.4.4c-.1.2-.2.3 0 .5.5.9 1.2 1.5 2.1 2 .3.2.4.1.6 0l.4-.5c.2-.2.4-.2.6-.1l1.4.8c.2.1.3.2.3.4 0 .5-.3 1.1-.7 1.3-.5.3-1.1.3-1.9.1-1.3-.4-2.6-1.2-3.6-2.2-1-1-1.8-2.2-2.1-3.4-.2-.6-.1-1.1.1-1.4Z" />
+        </svg>
+      </a>
+
+      <a href={contacts.instagram} aria-label="Instagram врача" title="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="3.4" y="3.4" width="17.2" height="17.2" rx="5" />
+          <circle cx="12" cy="12" r="4.1" />
+          <circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none" />
+        </svg>
       </a>
     </div>
 
-    <div class="row2">
-      <nav class="mainnav" aria-label="Разделы сайта">
-        {navLinks.map((l) => <a href={`${base}${l.href}`}>{l.label}</a>)}
-      </nav>
-
-      <div class="socials">
-        <a href={contacts.whatsapp} aria-label="Написать в WhatsApp">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <path d="M12 3.2a8.8 8.8 0 0 0-7.5 13.4L3.2 20.8l4.3-1.3A8.8 8.8 0 1 0 12 3.2Z" />
-            <path d="M9.1 8.3c.2-.4.4-.4.7-.4h.5c.2 0 .4 0 .6.4l.6 1.5c.1.3 0 .4-.1.6l-.4.4c-.1.2-.2.3 0 .5.5.9 1.2 1.5 2.1 2 .3.2.4.1.6 0l.4-.5c.2-.2.4-.2.6-.1l1.4.8c.2.1.3.2.3.4 0 .5-.3 1.1-.7 1.3-.5.3-1.1.3-1.9.1-1.3-.4-2.6-1.2-3.6-2.2-1-1-1.8-2.2-2.1-3.4-.2-.6-.1-1.1.1-1.4Z" />
-          </svg>
-        </a>
-        <a href={contacts.instagram} aria-label="Instagram врача">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <rect x="3.4" y="3.4" width="17.2" height="17.2" rx="5" />
-            <circle cx="12" cy="12" r="4.1" />
-            <circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none" />
-          </svg>
-        </a>
-      </div>
-    </div>
+    <nav class="mainnav" aria-label="Разделы сайта">
+      {navLinks.map((l) => <a href={`${base}${l.href}`}>{l.label}</a>)}
+    </nav>
   </div>
 </header>
 
@@ -80,48 +79,29 @@ main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
   text-decoration:none; color:var(--ink);
 }
 .brand .dot{color:var(--gold)}
-.nav-call{
-  display:inline-flex; align-items:center; justify-content:flex-end;
-  min-height:44px; text-decoration:none; white-space:nowrap;
-}
-/* На телефоне подпись прячем: она шире самого номера и выдавливала
-   значки за край экрана на узких аппаратах. */
-.nav-call-label{display:none}
-.nav-call-num{font-size:15px; color:var(--ink); letter-spacing:.01em}
 
-/* Телефон и значки — одна группа справа: посетитель попадает в WhatsApp
-   или Instagram с любого места страницы, не возвращаясь к контактам. */
-.reach{display:flex; align-items:center; justify-content:flex-end}
-
-/* Вторая строка: разделы листаются, значки стоят на месте справа.
-   Прежде всё теснилось в одной строке и свободного места не оставалось. */
-.row2{
-  grid-column:1 / -1; grid-row:2;
-  /* Без этого лента разделов растягивает всю сетку по своей длине. */
-  min-width:0;
-  display:flex; align-items:center; gap:8px;
-  border-top:1px solid var(--line);
-  margin:0 calc(var(--gut) * -1); padding:0 var(--gut);
-}
-.socials{display:flex; align-items:center; flex:0 0 auto; margin-right:-8px}
-.socials a{
+/* Три способа связаться, подряд и одинаковые по весу.
+   Номер и подпись убраны: на узких экранах они съедали всю строку,
+   а иконка телефона понятна без слов. Сам номер остался в контактах. */
+.reach{display:flex; align-items:center; margin-right:-8px}
+.reach a{
   display:inline-flex; align-items:center; justify-content:center;
-  width:40px; height:44px; color:var(--gold);
+  width:44px; height:44px; color:var(--gold);
 }
-.socials svg{width:20px; height:20px; display:block}
+.reach svg{width:21px; height:21px; display:block}
 
-/* На телефоне разделы уезжают в третью строку и листаются вбок:
+/* На телефоне разделы уезжают во вторую строку и листаются вбок:
    вертикаль первого экрана и без того плотная. */
 .mainnav{
-  flex:1 1 auto; min-width:0;
+  grid-column:1 / -1; grid-row:2; min-width:0;
   display:flex; gap:0; overflow-x:auto; overflow-y:hidden;
+  margin:0 calc(var(--gut) * -1); padding:0 var(--gut);
   scrollbar-width:none; -webkit-overflow-scrolling:touch;
-}
-.mainnav::-webkit-scrollbar{display:none}
-.mainnav{
+  border-top:1px solid var(--line);
   -webkit-mask-image:linear-gradient(to right, #000 0, #000 calc(100% - 26px), transparent 100%);
   mask-image:linear-gradient(to right, #000 0, #000 calc(100% - 26px), transparent 100%);
 }
+.mainnav::-webkit-scrollbar{display:none}
 .mainnav a{
   display:inline-flex; align-items:center; min-height:44px;
   padding:0 12px; white-space:nowrap; text-decoration:none;
@@ -134,36 +114,29 @@ main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
   width:3px; height:3px; margin-top:-1px; border-radius:50%;
   background:var(--gold); opacity:.55;
 }
+
+@media (prefers-reduced-motion:no-preference){
+  .reach a{transition:color .18s ease}
+  .reach a:hover{color:var(--ink)}
+}
+
 @media (min-width:900px){
   .topbar-in{
     grid-template-columns:auto 1fr auto;
-    gap:0 40px; padding:10px var(--gut);
-    /* Шире колонки текста: логотип к левому краю, телефон к правому.
+    gap:0 40px; padding:8px var(--gut);
+    /* Шире колонки текста: логотип к левому краю, значки к правому.
        Потолок — чтобы на широких экранах группы не расползались. */
     max-width:1680px;
   }
-  .row2{
-    display:contents;   /* на десктопе обёртка не нужна: всё в одну строку */
-  }
+  .brand{font-size:26px}
   .mainnav{
     grid-column:2; grid-row:1; justify-content:center;
-    flex:0 1 auto; margin:0; padding:0; overflow:visible;
+    margin:0; padding:0; border-top:0; overflow:visible;
+    -webkit-mask-image:none; mask-image:none;
   }
-  .socials{grid-column:3; grid-row:1; justify-self:end; align-self:center}
   .mainnav a{font-size:12px; padding:0 15px}
-  .brand{font-size:26px}
-  .nav-call{flex-direction:column; align-items:flex-end; gap:1px}
-  .nav-call-label{
-    display:block; font-size:10px; letter-spacing:.2em;
-    text-transform:uppercase; color:var(--gold);
-  }
-  .nav-call-num{font-size:16px}
-  /* Телефон и значки снова рядом: сетка ставит их в третью колонку. */
-  .topbar-in{grid-template-columns:auto 1fr auto auto}
-  .reach{grid-column:3; grid-row:1}
-  .socials{grid-column:4; grid-row:1; margin-right:-6px; margin-left:14px}
-  .socials a{width:44px}
-  .socials svg{width:22px; height:22px}
-  .mainnav{-webkit-mask-image:none; mask-image:none}
+  .reach{grid-column:3; grid-row:1; margin-right:-6px; gap:2px}
+  .reach a{width:46px; height:46px}
+  .reach svg{width:22px; height:22px}
 }
 </style>
