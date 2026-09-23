@@ -123,31 +123,45 @@ main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
   width:3px; height:3px; margin-top:-1px; border-radius:50%;
   background:var(--gold); opacity:.55;
 }
-@media (min-width:900px){
+/* Шапка переключается на три колонки позже остальной страницы: с шестью
+   разделами, логотипом и телефоном в один ряд ей нужно больше места,
+   иначе на планшетах строка переполняется. */
+@media (min-width:1000px){
   .topbar-in{
     grid-template-columns:auto 1fr auto;
     gap:0 40px; padding:10px var(--gut);
-    /* Шапка шире колонки текста: логотип уходит к левому краю,
-       телефон со значками — к правому. Потолок на случай очень
-       широких экранов, иначе группы расползаются. */
+    /* Шире колонки текста: логотип к левому краю, телефон к правому.
+       Потолок — чтобы на широких экранах группы не расползались. */
     max-width:1680px;
   }
   .mainnav{
     grid-column:2; grid-row:1; justify-content:center;
     margin:0; padding:0; border-top:0; overflow:visible;
+    -webkit-mask-image:none; mask-image:none;
   }
   .mainnav a{font-size:12px; padding:0 15px}
   .brand{font-size:26px}
-  .nav-call{flex-direction:column; align-items:flex-end; gap:1px}
-  .nav-call-label{
-    display:block; font-size:10px; letter-spacing:.2em;
-    text-transform:uppercase; color:var(--gold);
-  }
   .nav-call-num{font-size:16px}
   .reach{gap:14px}
   .socials{margin-right:-6px}
   .socials a{width:44px}
   .socials svg{width:22px; height:22px}
-  .mainnav{-webkit-mask-image:none; mask-image:none}
+}
+
+/* Подпись возвращается только там, где под неё есть место, и сразу
+   в строку: стоя над номером она шире его, и номер выглядел вдавленным. */
+@media (min-width:1240px){
+  .nav-call{flex-direction:row; align-items:baseline; gap:12px}
+  .nav-call-label{
+    display:inline-block; font-size:10px; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--gold); position:relative;
+  }
+  .nav-call-label::after{
+    content:''; position:absolute; right:-7px; top:50%;
+    width:3px; height:3px; margin-top:-1px; border-radius:50%;
+    background:var(--gold); opacity:.6;
+  }
+  .reach{gap:20px}
+  .socials{gap:2px}
 }
 </style>
