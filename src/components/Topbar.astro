@@ -1,0 +1,105 @@
+---
+import { contacts } from '../lib/site.js';
+
+// BASE_URL приходит без завершающего слеша — дописываем, иначе пути склеиваются
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+// Разделы для навигации. Со страницы статьи ведут обратно на главную,
+// поэтому адрес всегда полный, а не голый якорь.
+const navLinks = [
+  { href: '#about',      label: 'О враче' },
+  { href: '#complaints', label: 'Направления' },
+  { href: '#visit',      label: 'Приём' },
+  { href: '#prices',     label: 'Цены' },
+  { href: '#reviews',    label: 'Отзывы' },
+  { href: '#guides',     label: 'Статьи' },
+];
+---
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href={base}>Lor<span class="dot">.</span>roza</a>
+
+    <nav class="mainnav" aria-label="Разделы сайта">
+      {navLinks.map((l) => <a href={`${base}${l.href}`}>{l.label}</a>)}
+    </nav>
+
+    <a class="nav-call" href={contacts.phoneHref}>
+      <span class="nav-call-label">Запись по телефону</span>
+      <span class="nav-call-num">{contacts.phoneDisplay}</span>
+    </a>
+  </div>
+</header>
+
+<style>
+/* Якорь не должен уезжать под липкую шапку. */
+section[id],
+main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
+
+/* Шапка вынесена из первого экрана и липнет к верху: навигация нужна
+   на любой глубине, иначе за ценами приходится листать четыре экрана. */
+.topbar{
+  position:sticky; top:0; z-index:40;
+  background-color:var(--cream);
+  background-image:var(--paper-url);
+  background-size:420px auto;
+  background-blend-mode:multiply;
+  border-bottom:1px solid var(--line);
+}
+.topbar-in{
+  display:grid; grid-template-columns:auto auto;
+  align-items:center; justify-content:space-between;
+  gap:0 12px; padding:2px var(--gut);
+  max-width:var(--maxw); margin:0 auto;
+}
+.brand{
+  display:inline-flex; align-items:center; min-height:44px;
+  font-family:var(--display); font-size:21px; letter-spacing:.02em;
+  text-decoration:none; color:var(--ink);
+}
+.brand .dot{color:var(--gold)}
+.nav-call{
+  display:inline-flex; flex-direction:column; align-items:flex-end; justify-content:center;
+  min-height:44px; text-decoration:none; white-space:nowrap; gap:1px;
+}
+.nav-call-label{
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+}
+.nav-call-num{font-size:14px; color:var(--ink); letter-spacing:.01em}
+
+/* На телефоне разделы уезжают в третью строку и листаются вбок:
+   вертикаль первого экрана и без того плотная. */
+.mainnav{
+  grid-column:1 / -1; grid-row:2;
+  display:flex; gap:0; overflow-x:auto; overflow-y:hidden;
+  margin:0 calc(var(--gut) * -1); padding:0 var(--gut);
+  scrollbar-width:none; -webkit-overflow-scrolling:touch;
+  border-top:1px solid var(--line);
+}
+.mainnav::-webkit-scrollbar{display:none}
+.mainnav a{
+  display:inline-flex; align-items:center; min-height:44px;
+  padding:0 12px; white-space:nowrap; text-decoration:none;
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ink-soft); position:relative;
+}
+.mainnav a:first-child{padding-left:0}
+.mainnav a + a::before{
+  content:''; position:absolute; left:0; top:50%;
+  width:3px; height:3px; margin-top:-1px; border-radius:50%;
+  background:var(--gold); opacity:.55;
+}
+@media (min-width:900px){
+  .topbar-in{
+    grid-template-columns:auto 1fr auto;
+    gap:0 40px; padding:10px var(--gut);
+  }
+  .mainnav{
+    grid-column:2; grid-row:1; justify-content:center;
+    margin:0; padding:0; border-top:0; overflow:visible;
+  }
+  .mainnav a{font-size:12px; padding:0 15px}
+  .brand{font-size:26px}
+  .nav-call-num{font-size:16px}
+}
+</style>

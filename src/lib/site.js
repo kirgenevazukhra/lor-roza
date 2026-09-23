@@ -3,6 +3,7 @@ import prices from '../data/prices.json';
 import services from '../data/services.json';
 import faq from '../data/faq.json';
 import reviews from '../data/reviews.json';
+// Только для пробных вариантов в proto/: главная работает на коллекции статей.
 import guides from '../data/guides.json';
 
 export { contacts, prices, services, faq, reviews, guides };

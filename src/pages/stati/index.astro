@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import Article from '../../layouts/Article.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const stati = (await getCollection('stati')).sort((a, b) => a.data.order - b.data.order);
+const gotovye = stati.filter((a) => !a.data.draft);
+const gotovyatsya = stati.filter((a) => a.data.draft);
+---
+
+<Article
+  title="Полезное для пациентов"
+  description="Разборы частых вопросов и рекомендации ЛОР-врача. Тексты выходят после проверки врачом."
+  series="Материалы"
+>
+  <ul class="list">
+    {gotovye.map((a) => (
+      <li>
+        <a href={`${base}stati/${a.id}/`}>
+          <span class="series">{a.data.series}</span>
+          <strong>{a.data.title}</strong>
+          {a.data.description && <span class="desc">{a.data.description}</span>}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  {gotovyatsya.length > 0 && (
+    <section class="soon">
+      <h2>Готовятся</h2>
+      <ul class="plain">{gotovyatsya.map((a) => <li>{a.data.title}</li>)}</ul>
+    </section>
+  )}
+</Article>
+
+<style>
+  .list{list-style:none; margin:0; padding:0}
+  .list li{border-top:1px solid var(--line)}
+  .list li:last-child{border-bottom:1px solid var(--line)}
+  .list a{display:block; padding:24px 0; text-decoration:none; color:inherit}
+  .series{
+    display:block; font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--gold); margin:0 0 9px;
+  }
+  .list strong{
+    display:block; font-family:var(--display); font-weight:400;
+    font-size:25px; line-height:1.18; margin:0 0 8px;
+  }
+  .desc{display:block; font-size:16px; color:var(--ink-soft)}
+  .soon{margin-top:44px}
+  .soon h2{
+    font-size:13px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--gold); font-weight:500; margin:0 0 14px;
+  }
+  .plain{list-style:none; margin:0; padding:0}
+  .plain li{padding:12px 0; border-bottom:1px solid var(--line); color:var(--ink-soft)}
+</style>

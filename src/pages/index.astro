@@ -1,6 +1,9 @@
 ---
 import Photo from '../components/Photo.astro';
-import { contacts, services, guides, reviews, faq, prices, byGroup, hero, about, heroLineHead, heroLineTail } from '../lib/site.js';
+import Topbar from '../components/Topbar.astro';
+import '../styles/tokens.css';
+import { contacts, services, reviews, faq, prices, byGroup, hero, about, heroLineHead, heroLineTail } from '../lib/site.js';
+import { getCollection } from 'astro:content';
 
 // Мессенджеры требуют абсолютный URL — иначе превью не собирается.
 // BASE_URL приходит без завершающего слеша — дописываем, иначе пути склеиваются
@@ -8,6 +11,11 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const canonical = new URL(base, Astro.site).href;
 const ogImage = new URL(`${base}og.jpg`, Astro.site).href;
 const ogDescription = `${hero.subtitle} ${hero.line}`;
+
+// Статьи: готовые ведут на свои страницы, неготовые показываются как «готовится».
+const stati = (await getCollection('stati')).sort((a, b) => a.data.order - b.data.order);
+const gotovye = stati.filter((a) => !a.data.draft);
+const gotovyatsya = stati.filter((a) => a.data.draft);
 
 // Область жалобы -> иконка
 const regionIcon = { 'ухо': 'ear', 'нос': 'nose', 'горло': 'throat' };
@@ -75,15 +83,9 @@ const filmstrip = [
 <a class="skip" href="#main">К содержанию</a>
 
 <!-- ─── ПЕРВЫЙ ЭКРАН ─────────────────────────────── -->
-<header class="hero">
-  <nav class="nav">
-    <a class="brand" href={base}>Lor<span class="dot">.</span>roza</a>
-    <a class="nav-call" href={contacts.phoneHref}>
-      <span class="nav-call-label">Запись по телефону</span>
-      <span class="nav-call-num">{contacts.phoneDisplay}</span>
-    </a>
-  </nav>
+<Topbar />
 
+<section class="hero">
   <figure class="hero-figure">
     <Photo
       name="portrait-tools"
@@ -111,7 +113,7 @@ const filmstrip = [
     </div>
     <p class="hero-note">{contacts.scheduleNote}</p>
   </div>
-</header>
+</section>
 
 <main id="main">
 
@@ -269,13 +271,29 @@ const filmstrip = [
 <section class="sec cream tight" id="guides">
   <p class="kicker">Материалы</p>
   <h2 class="display reveal"><span class="ln">Полезное для пациентов</span></h2>
-  <p class="sec-note">Готовятся к публикации. Выходят после проверки врачом.</p>
-  {guides.series.map((s) => (
-    <div class="guide">
-      <p class="rule-label"><span class="rule"></span>{s.title}</p>
-      <ul class="topics">{s.topics.map((t) => <li>{t}</li>)}</ul>
+
+  <ul class="articles">
+    {gotovye.map((a) => (
+      <li>
+        <a href={`${base}stati/${a.id}/`}>
+          <span class="art-series">{a.data.series}</span>
+          <h3>{a.data.title}</h3>
+          {a.data.description && <p>{a.data.description}</p>}
+          <span class="art-go">Читать</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  {gotovyatsya.length > 0 && (
+    <div class="soon">
+      <p class="rule-label"><span class="rule"></span>Готовятся</p>
+      <ul class="topics">
+        {gotovyatsya.map((a) => <li>{a.data.title}</li>)}
+      </ul>
+      <p class="sec-note">Медицинские тексты выходят после проверки врачом.</p>
     </div>
-  ))}
+  )}
 </section>
 
 <!-- ─── ВОПРОСЫ ──────────────────────────────────── -->
@@ -286,8 +304,9 @@ const filmstrip = [
     {faq.items.map((f) => (
       <details>
         <summary><span>{f.q}</span></summary>
-        {f.a && <p>{f.a}</p>}
-        {f.pendingNote && <p class="pending-inline">{f.pendingNote}</p>}
+        <div class="faq-body">
+          {f.a.map((para) => <p>{para}</p>)}
+        </div>
       </details>
     ))}
   </div>
@@ -303,7 +322,7 @@ const filmstrip = [
     <h2 class="display light reveal"><span class="ln">Записаться на приём</span></h2>
     <p class="lede light">Напишите в WhatsApp — администратор подскажет ближайшие свободные окна.</p>
     <dl class="contacts">
-      <dt>Адрес</dt><dd><span>{contacts.address}<br /><span class="muted">{contacts.city}</span></span></dd>
+      <dt>Адрес</dt><dd><span>{contacts.address}</span></dd>
       <dt>Телефон</dt><dd><a href={contacts.phoneHref}>{contacts.phoneDisplay}</a></dd>
       <dt>Instagram</dt><dd><a href={contacts.instagram}>{contacts.instagramHandle}</a></dd>
     </dl>
@@ -324,23 +343,6 @@ const filmstrip = [
 <a class="sticky-wa" href={contacts.whatsapp}>Написать в WhatsApp</a>
 
 <style>
-:root{
-  --cream:#F4EFE7;
-  --sand:#E9E1D4;
-  --dark:#221D18;
-  --darker:#191411;
-  --ink:#231E19;
-  --ink-soft:#6E6358;
-  --gold:#9C7B4E;
-  --gold-lt:#C4A97E;
-  --line:rgba(35,30,25,.16);
-  --line-light:rgba(244,239,231,.2);
-  --display:'Oranienbaum', Georgia, serif;
-  --sans:'Onest', system-ui, sans-serif;
-  --gut:20px;
-  --maxw:1080px;
-  --col:660px;
-}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
 body{
@@ -373,7 +375,7 @@ a:focus-visible,summary:focus-visible,.strip:focus-visible{outline:2px solid var
   display:flex; flex-direction:column;
   border-bottom:1px solid var(--line);
 }
-.hero-figure{position:relative; height:42svh; min-height:280px; overflow:hidden; order:1}
+.hero-figure{position:relative; height:27svh; min-height:190px; overflow:hidden; order:1}
 /* Маской, а не заливкой: кадр становится прозрачным к краю и пропускает
    фон насквозь. Заливка дала бы шов поверх текстуры. */
 .hero-figure{
@@ -381,27 +383,6 @@ a:focus-visible,summary:focus-visible,.strip:focus-visible{outline:2px solid var
   mask-image:linear-gradient(to bottom, #000 0%, #000 58%, rgba(0,0,0,.45) 82%, transparent 100%);
 }
 :global(.hero-img){object-position:50% 12%}
-.nav{
-  order:0; position:relative; z-index:2;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:10px var(--gut); max-width:var(--maxw); margin:0 auto; width:100%;
-}
-.brand{
-  display:inline-flex; align-items:center; min-height:44px;
-  font-family:var(--display); font-size:23px; letter-spacing:.02em;
-  text-decoration:none; color:var(--ink);
-}
-.brand .dot{color:var(--gold)}
-.nav-call{
-  display:inline-flex; flex-direction:column; align-items:flex-end; justify-content:center;
-  min-height:48px; text-decoration:none; white-space:nowrap; gap:2px;
-}
-.nav-call-label{
-  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
-}
-.nav-call-num{font-size:16px; color:var(--ink); letter-spacing:.01em}
-.brand{font-size:26px}
-
 .hero-panel{
   order:2; position:relative; z-index:2;
   padding:26px var(--gut) 44px; max-width:var(--maxw); margin:0 auto; width:100%;
@@ -610,6 +591,26 @@ h1{
 .link-out span{border-bottom:1px solid currentColor; padding-bottom:3px}
 
 /* ── материалы / faq ────────────────────────────── */
+.articles{list-style:none; margin:0 0 40px; padding:0}
+.articles li{border-top:1px solid var(--line)}
+.articles li:last-child{border-bottom:1px solid var(--line)}
+.articles a{
+  display:block; padding:26px 0; text-decoration:none; color:inherit;
+}
+.art-series{
+  display:block; font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold); margin:0 0 10px;
+}
+.articles h3{
+  font-family:var(--display); font-weight:400; font-size:26px; line-height:1.18;
+  margin:0 0 8px; letter-spacing:.005em;
+}
+.articles p{margin:0 0 14px; font-size:16px; color:var(--ink-soft); max-width:56ch}
+.art-go{
+  font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
+  border-bottom:1px solid currentColor; padding-bottom:3px;
+}
+.soon{margin:0 auto}
 .guide{margin:0 auto 32px}
 .topics{list-style:none; margin:0; padding:0}
 .topics li{padding:12px 0; border-bottom:1px solid var(--line); font-size:16px; color:var(--ink-soft)}
@@ -621,8 +622,9 @@ h1{
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::before{content:'+'; color:var(--gold); flex:0 0 auto; line-height:1.4}
 .faq details[open] summary::before{content:'–'}
-.faq p{margin:0 0 18px; padding-left:28px; font-size:15px; color:var(--ink-soft)}
-.pending-inline{font-style:italic; color:var(--gold)}
+.faq-body{padding:0 0 6px 28px}
+.faq-body p{margin:0 0 14px; font-size:15px; color:var(--ink-soft)}
+.faq-body p:last-child{margin-bottom:12px}
 
 /* ── запись ─────────────────────────────────────── */
 .cta{position:relative; padding:0; overflow:hidden}
@@ -685,14 +687,14 @@ h1{
 
 /* ── десктоп ────────────────────────────────────── */
 @media (min-width:900px){
-  :root{--gut:44px; --col:700px}
+  :root{--gut:44px; --col:700px; --topbar-h:65px}
   body{font-size:18px; padding-bottom:0}
 
-  .hero{min-height:92svh; display:grid; grid-template-columns:1fr 46vw; grid-template-rows:auto 1fr}
+  .hero{min-height:calc(92svh - 64px); display:grid; grid-template-columns:1fr 46vw}
   /* Кадр заполняет колонку, а не задаёт высоту: вертикальный снимок
      при ширине колонки давал 993px и выталкивал низ героя за экран. */
   .hero-figure{
-    grid-column:2; grid-row:1 / 3; order:0;
+    grid-column:2; grid-row:1; order:0;
     position:relative; height:auto; min-height:0; overflow:hidden;
   }
   :global(.hero-img){
@@ -704,12 +706,8 @@ h1{
     mask-image:linear-gradient(to right, transparent 0%, rgba(0,0,0,.35) 12%, rgba(0,0,0,.85) 30%, #000 48%);
   }
   :global(.hero-img){object-position:50% 15%}
-    .nav{
-    grid-column:1; grid-row:1; padding:22px var(--gut) 20px; max-width:none;
-    border-bottom:1px solid var(--line); margin-right:-1px;
-  }
   .hero-panel{
-    grid-column:1; grid-row:2; align-self:center; order:0;
+    grid-column:1; grid-row:1; align-self:center; order:0;
     padding:0 40px 40px var(--gut); max-width:none;
   }
   #about{padding-top:68px}

@@ -1,0 +1,19 @@
+/* Общие токены оформления. Используются главной страницей и статьями. */
+:root{
+  --cream:#F4EFE7;
+  --sand:#E9E1D4;
+  --dark:#221D18;
+  --darker:#191411;
+  --ink:#231E19;
+  --ink-soft:#6E6358;
+  --gold:#9C7B4E;
+  --gold-lt:#C4A97E;
+  --line:rgba(35,30,25,.16);
+  --line-light:rgba(244,239,231,.2);
+  --display:'Oranienbaum', Georgia, serif;
+  --sans:'Onest', system-ui, sans-serif;
+  --gut:20px;
+  --maxw:1080px;
+  --topbar-h:94px;   /* высота липкой шапки: под неё отводим отступ якорям */
+  --col:660px;
+}
