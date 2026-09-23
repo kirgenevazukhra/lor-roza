@@ -20,15 +20,17 @@ const navLinks = [
   <div class="topbar-in">
     <a class="brand" href={base}>Lor<span class="dot">.</span>roza</a>
 
-    <nav class="mainnav" aria-label="Разделы сайта">
-      {navLinks.map((l) => <a href={`${base}${l.href}`}>{l.label}</a>)}
-    </nav>
-
     <div class="reach">
       <a class="nav-call" href={contacts.phoneHref}>
         <span class="nav-call-label">Запись по телефону</span>
         <span class="nav-call-num">{contacts.phoneDisplay}</span>
       </a>
+    </div>
+
+    <div class="row2">
+      <nav class="mainnav" aria-label="Разделы сайта">
+        {navLinks.map((l) => <a href={`${base}${l.href}`}>{l.label}</a>)}
+      </nav>
 
       <div class="socials">
         <a href={contacts.whatsapp} aria-label="Написать в WhatsApp">
@@ -67,7 +69,7 @@ main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
   border-bottom:1px solid var(--line);
 }
 .topbar-in{
-  display:grid; grid-template-columns:auto auto;
+  display:grid; grid-template-columns:minmax(0,auto) minmax(0,auto);
   align-items:center; justify-content:space-between;
   gap:0 12px; padding:2px var(--gut);
   max-width:var(--maxw); margin:0 auto;
@@ -85,12 +87,23 @@ main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
 /* На телефоне подпись прячем: она шире самого номера и выдавливала
    значки за край экрана на узких аппаратах. */
 .nav-call-label{display:none}
-.nav-call-num{font-size:13px; color:var(--ink); letter-spacing:.01em}
+.nav-call-num{font-size:15px; color:var(--ink); letter-spacing:.01em}
 
 /* Телефон и значки — одна группа справа: посетитель попадает в WhatsApp
    или Instagram с любого места страницы, не возвращаясь к контактам. */
-.reach{display:flex; align-items:center; gap:6px}
-.socials{display:flex; align-items:center; margin-right:-8px}
+.reach{display:flex; align-items:center; justify-content:flex-end}
+
+/* Вторая строка: разделы листаются, значки стоят на месте справа.
+   Прежде всё теснилось в одной строке и свободного места не оставалось. */
+.row2{
+  grid-column:1 / -1; grid-row:2;
+  /* Без этого лента разделов растягивает всю сетку по своей длине. */
+  min-width:0;
+  display:flex; align-items:center; gap:8px;
+  border-top:1px solid var(--line);
+  margin:0 calc(var(--gut) * -1); padding:0 var(--gut);
+}
+.socials{display:flex; align-items:center; flex:0 0 auto; margin-right:-8px}
 .socials a{
   display:inline-flex; align-items:center; justify-content:center;
   width:40px; height:44px; color:var(--gold);
@@ -100,11 +113,9 @@ main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
 /* На телефоне разделы уезжают в третью строку и листаются вбок:
    вертикаль первого экрана и без того плотная. */
 .mainnav{
-  grid-column:1 / -1; grid-row:2;
+  flex:1 1 auto; min-width:0;
   display:flex; gap:0; overflow-x:auto; overflow-y:hidden;
-  margin:0 calc(var(--gut) * -1); padding:0 var(--gut);
   scrollbar-width:none; -webkit-overflow-scrolling:touch;
-  border-top:1px solid var(--line);
 }
 .mainnav::-webkit-scrollbar{display:none}
 .mainnav{
@@ -123,10 +134,7 @@ main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
   width:3px; height:3px; margin-top:-1px; border-radius:50%;
   background:var(--gold); opacity:.55;
 }
-/* Шапка переключается на три колонки позже остальной страницы: с шестью
-   разделами, логотипом и телефоном в один ряд ей нужно больше места,
-   иначе на планшетах строка переполняется. */
-@media (min-width:1000px){
+@media (min-width:900px){
   .topbar-in{
     grid-template-columns:auto 1fr auto;
     gap:0 40px; padding:10px var(--gut);
@@ -134,34 +142,28 @@ main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
        Потолок — чтобы на широких экранах группы не расползались. */
     max-width:1680px;
   }
+  .row2{
+    display:contents;   /* на десктопе обёртка не нужна: всё в одну строку */
+  }
   .mainnav{
     grid-column:2; grid-row:1; justify-content:center;
-    margin:0; padding:0; border-top:0; overflow:visible;
-    -webkit-mask-image:none; mask-image:none;
+    flex:0 1 auto; margin:0; padding:0; overflow:visible;
   }
+  .socials{grid-column:3; grid-row:1; justify-self:end; align-self:center}
   .mainnav a{font-size:12px; padding:0 15px}
   .brand{font-size:26px}
+  .nav-call{flex-direction:column; align-items:flex-end; gap:1px}
+  .nav-call-label{
+    display:block; font-size:10px; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--gold);
+  }
   .nav-call-num{font-size:16px}
-  .reach{gap:14px}
-  .socials{margin-right:-6px}
+  /* Телефон и значки снова рядом: сетка ставит их в третью колонку. */
+  .topbar-in{grid-template-columns:auto 1fr auto auto}
+  .reach{grid-column:3; grid-row:1}
+  .socials{grid-column:4; grid-row:1; margin-right:-6px; margin-left:14px}
   .socials a{width:44px}
   .socials svg{width:22px; height:22px}
-}
-
-/* Подпись возвращается только там, где под неё есть место, и сразу
-   в строку: стоя над номером она шире его, и номер выглядел вдавленным. */
-@media (min-width:1240px){
-  .nav-call{flex-direction:row; align-items:baseline; gap:12px}
-  .nav-call-label{
-    display:inline-block; font-size:10px; letter-spacing:.2em;
-    text-transform:uppercase; color:var(--gold); position:relative;
-  }
-  .nav-call-label::after{
-    content:''; position:absolute; right:-7px; top:50%;
-    width:3px; height:3px; margin-top:-1px; border-radius:50%;
-    background:var(--gold); opacity:.6;
-  }
-  .reach{gap:20px}
-  .socials{gap:2px}
+  .mainnav{-webkit-mask-image:none; mask-image:none}
 }
 </style>
