@@ -83,7 +83,9 @@ main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
 /* Три способа связаться, подряд и одинаковые по весу.
    Номер и подпись убраны: на узких экранах они съедали всю строку,
    а иконка телефона понятна без слов. Сам номер остался в контактах. */
-.reach{display:flex; align-items:center; margin-right:-8px}
+/* Ячейка сетки растянута на всю свободную ширину, поэтому значки
+   внутри неё нужно прижать вправо — иначе они висят посередине. */
+.reach{display:flex; align-items:center; justify-content:flex-end; margin-right:-8px}
 .reach a{
   display:inline-flex; align-items:center; justify-content:center;
   width:44px; height:44px; color:var(--gold);
