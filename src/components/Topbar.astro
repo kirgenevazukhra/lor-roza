@@ -123,6 +123,10 @@ main [id]{scroll-margin-top:calc(var(--topbar-h) + 18px)}
   .topbar-in{
     grid-template-columns:auto 1fr auto;
     gap:0 40px; padding:10px var(--gut);
+    /* Шапка шире колонки текста: логотип уходит к левому краю,
+       телефон со значками — к правому. Потолок на случай очень
+       широких экранов, иначе группы расползаются. */
+    max-width:1680px;
   }
   .mainnav{
     grid-column:2; grid-row:1; justify-content:center;
