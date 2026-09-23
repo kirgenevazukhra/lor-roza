@@ -184,7 +184,7 @@ const filmstrip = [
 </section>
 
 <!-- ─── ПРИЁМ ────────────────────────────────────── -->
-<section class="sec dark" id="visit">
+<section class="sec dark tight-bottom" id="visit">
   <p class="kicker light">Приём</p>
   <h2 class="display light reveal"><span class="ln">Как проходит приём</span></h2>
   <p class="lede light">Приём длится до тридцати минут. Осмотр уха, носа и горла, при необходимости — эндоскопия. Дальше разбираем, что происходит, и составляем план: что делать, чем лечить и зачем нужен каждый пункт.</p>
@@ -199,11 +199,11 @@ const filmstrip = [
     </div>
   </div>
 
-  <p class="kicker light strip-label">Кабинет и работа</p>
 </section>
 
 <!-- ─── ЛЕНТА КАДРОВ ─────────────────────────────── -->
 <section class="filmstrip dark-cont" aria-label="Фотографии кабинета и приёма">
+  <p class="kicker light strip-label">Кабинет и работа</p>
   <div class="strip" tabindex="0">
     {filmstrip.map((f) => (
       <figure class="strip-item">
@@ -375,12 +375,12 @@ a:focus-visible,summary:focus-visible,.strip:focus-visible{outline:2px solid var
   display:flex; flex-direction:column;
   border-bottom:1px solid var(--line);
 }
-.hero-figure{position:relative; height:27svh; min-height:190px; overflow:hidden; order:1}
+.hero-figure{position:relative; height:36svh; min-height:260px; overflow:hidden; order:1}
 /* Маской, а не заливкой: кадр становится прозрачным к краю и пропускает
    фон насквозь. Заливка дала бы шов поверх текстуры. */
 .hero-figure{
-  -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 58%, rgba(0,0,0,.45) 82%, transparent 100%);
-  mask-image:linear-gradient(to bottom, #000 0%, #000 58%, rgba(0,0,0,.45) 82%, transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 74%, rgba(0,0,0,.5) 91%, transparent 100%);
+  mask-image:linear-gradient(to bottom, #000 0%, #000 74%, rgba(0,0,0,.5) 91%, transparent 100%);
 }
 :global(.hero-img){object-position:50% 12%}
 .hero-panel{
@@ -434,6 +434,7 @@ h1{
 }
 .dark{background:var(--dark); color:var(--cream)}
 .dark-cont{background:var(--dark)}
+.tight-bottom{padding-bottom:34px}
 .kicker{
   margin:0 0 14px; font-size:12px; letter-spacing:.22em;
   text-transform:uppercase; color:var(--gold); font-weight:500;
@@ -521,10 +522,15 @@ h1{
 .duo-fig{aspect-ratio:4/3; overflow:hidden}
 .duo-body h3{font-family:var(--display); font-weight:400; font-size:27px; margin:0 0 12px}
 .duo-body p{margin:0; font-size:15px; color:#C6BAA9}
-.strip-label{margin:44px 0 0}
+/* Подпись живёт внутри ленты: в конце предыдущей секции между ней
+   и кадрами складывались оба отступа, и она уезжала далеко. */
+.strip-label{
+  margin:0 auto 16px; padding:0 var(--gut);
+  max-width:var(--maxw);
+}
 
 /* ── лента кадров ───────────────────────────────── */
-.filmstrip{padding:16px 0 56px}
+.filmstrip{padding:0 0 56px}
 .strip{
   display:flex; gap:12px; overflow-x:auto; overflow-y:hidden;
   scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
