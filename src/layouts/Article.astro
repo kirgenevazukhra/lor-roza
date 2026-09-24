@@ -3,7 +3,7 @@ import Topbar from '../components/Topbar.astro';
 import { contacts } from '../lib/site.js';
 import '../styles/tokens.css';
 
-const { title, description, series, date } = Astro.props;
+const { title, description, series, date, video } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -57,6 +57,23 @@ const dateLabel = date
         {dateLabel && <em>{dateLabel}</em>}
       </p>
     </header>
+
+    {video && (
+      <figure class="clip">
+        <video
+          controls
+          preload="none"
+          playsinline
+          poster={`${base}video/${video.poster}`}
+          width="720"
+          height="1280"
+        >
+          <source src={`${base}video/${video.src}`} type="video/mp4" />
+          Ваш браузер не воспроизводит видео. Ролик есть в Instagram врача.
+        </video>
+        {video.caption && <figcaption>{video.caption}</figcaption>}
+      </figure>
+    )}
 
     <div class="body">
       <slot />
@@ -119,6 +136,21 @@ h1{
 }
 .byline em{font-style:normal; color:var(--gold)}
 
+/* ── ролик ──────────────────────────────────────── */
+/* Вертикальный кадр 9:16: во всю ширину колонки он подавил бы текст,
+   поэтому на десктопе ограничен. preload="none" — ничего не грузится,
+   пока не нажали: на мобильном это экономит мегабайты. */
+.clip{margin:0 0 40px}
+.clip video{
+  display:block; width:100%; height:auto; max-width:330px; margin:0 auto;
+  aspect-ratio:9/16; object-fit:cover; background:var(--dark);
+  border:1px solid var(--line);
+}
+.clip figcaption{
+  margin:14px auto 0; max-width:330px;
+  font-size:13px; letter-spacing:.02em; color:var(--ink-soft); text-align:center;
+}
+
 /* ── текст ──────────────────────────────────────── */
 .body :global(p){margin:0 0 20px; font-size:17px; line-height:1.68}
 .body :global(h2){
@@ -178,6 +210,7 @@ h1{
 @media (min-width:900px){
   body{font-size:18px; padding-bottom:0}
   .wrap{padding:64px var(--gut) 20px}
+  .clip video{max-width:340px}
   .actions{flex-direction:row}
   .btn{flex:0 0 auto; min-width:250px}
   .sticky-wa{display:none}

@@ -14,6 +14,14 @@ const stati = defineCollection({
     date: z.coerce.date().optional(),
     // Заметка для внутренней работы: чего не хватает, чтобы опубликовать.
     note: z.string().optional(),
+    // Ролик врача. Файлы лежат в public/video/, обложка снята кадром из него.
+    video: z
+      .object({
+        src: z.string(),
+        poster: z.string(),
+        caption: z.string().optional(),
+      })
+      .optional(),
   }),
 });
 
