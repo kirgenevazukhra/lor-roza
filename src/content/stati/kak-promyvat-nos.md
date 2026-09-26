@@ -5,6 +5,7 @@ series: Нос и дыхание
 order: 1
 draft: false
 date: 2026-09-23
+reviewed: 2026-09-23
 video:
   src: kak-promyvat-nos.mp4
   poster: kak-promyvat-nos-poster.jpg

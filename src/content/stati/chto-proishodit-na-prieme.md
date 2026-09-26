@@ -5,6 +5,8 @@ series: Как проходит приём
 order: 4
 draft: false
 date: 2026-09-24
+# Текст дополнен по фактам из брифа, врач его ещё не проверяла.
+# reviewed: {{TODO: дата проверки врачом}}
 video:
   src: chto-proishodit-na-prieme.mp4
   poster: chto-proishodit-na-prieme-poster.jpg

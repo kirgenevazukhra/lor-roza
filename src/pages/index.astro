@@ -5,6 +5,7 @@ import MapEmbed from '../components/MapEmbed.astro';
 import '../styles/tokens.css';
 import { contacts, services, reviews, faq, prices, byGroup, hero, about, heroLineHead, heroLineTail } from '../lib/site.js';
 import { getCollection } from 'astro:content';
+import { homeGraph, ld } from '../lib/schema.js';
 
 // Мессенджеры требуют абсолютный URL — иначе превью не собирается.
 // BASE_URL приходит без завершающего слеша — дописываем, иначе пути склеиваются
@@ -12,6 +13,11 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const canonical = new URL(base, Astro.site).href;
 const ogImage = new URL(`${base}og.jpg`, Astro.site).href;
 const ogDescription = `${hero.subtitle} ${hero.line}`;
+const schema = homeGraph({
+  home: canonical,
+  image: ogImage,
+  doctorImage: new URL(`${base}images/portrait-tools-1024.jpg`, Astro.site).href,
+});
 
 // Статьи: готовые ведут на свои страницы, неготовые показываются как «готовится».
 const stati = (await getCollection('stati')).sort((a, b) => a.data.order - b.data.order);
@@ -47,11 +53,12 @@ const filmstrip = [
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{contacts.doctorName} — ЛОР-врач для детей и взрослых в Астане</title>
 <meta name="description" content={`${hero.subtitle} ${hero.line} Приём по записи, Астана.`} />
-<!-- Черновик на согласовании: в поиск не отдаём до запуска на своём домене. -->
 <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
 <link rel="icon" href={`${base}favicon.png`} sizes="32x32" />
 <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
 <meta name="theme-color" content="#F4EFE7" />
+<!-- Черновик на согласовании: в поиск не отдаём.
+     Убрать при запуске на своём домене. -->
 <meta name="robots" content="noindex, nofollow" />
 <link rel="canonical" href={canonical} />
 <meta property="og:type" content="website" />
@@ -72,6 +79,7 @@ const filmstrip = [
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Oranienbaum&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <script is:inline>document.documentElement.classList.add('js')</script>
+<script type="application/ld+json" set:html={ld(schema)} />
 <!-- Пути к текстурам в CSS абсолютные, поэтому base подставляем переменными. -->
 <style is:inline set:html={`:root{
   --paper-url:url('${base}images/textures/paper.webp');

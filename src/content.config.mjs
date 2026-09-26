@@ -12,6 +12,9 @@ const stati = defineCollection({
     order: z.number().default(100),
     draft: z.boolean().default(false),
     date: z.coerce.date().optional(),
+    // Когда врач проверил текст. Ставится только по факту проверки:
+    // уходит в разметку как lastReviewed.
+    reviewed: z.coerce.date().optional(),
     // Заметка для внутренней работы: чего не хватает, чтобы опубликовать.
     note: z.string().optional(),
     // Ролик врача. Файлы лежат в public/video/, обложка снята кадром из него.

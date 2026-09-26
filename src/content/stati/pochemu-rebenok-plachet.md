@@ -5,6 +5,7 @@ series: Детям
 order: 3
 draft: false
 date: 2026-09-24
+reviewed: 2026-09-24
 video:
   src: instrukciya-roditelyam.mp4
   poster: instrukciya-roditelyam-poster.jpg
