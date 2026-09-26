@@ -1,5 +1,10 @@
 ---
-// Одна фотография во всех ширинах: WebP через srcset, JPG запасным.
+// Одна фотография во всех ширинах: WebP через <source>, JPG запасным
+// для браузеров без WebP. width/height читаются из самого JPG на сборке —
+// браузер заранее знает пропорции и не сдвигает вёрстку при загрузке.
+import sharp from 'sharp';
+import { join } from 'node:path';
+
 const {
   name,
   alt,
@@ -14,21 +19,31 @@ const {
 // BASE_URL приходит без завершающего слеша — дописываем, иначе пути склеиваются
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const srcset = widths.map((w) => `${base}images/${name}-${w}.webp ${w}w`).join(', ');
+
+const jpg = `images/${name}-1024.jpg`;
+const { width, height } = await sharp(join(process.cwd(), 'public', jpg)).metadata();
 ---
-<img
-  src={`${base}images/${name}-1024.jpg`}
-  srcset={srcset}
-  sizes={sizes}
-  alt={alt}
-  class={className}
-  loading={loading}
-  fetchpriority={fetchpriority}
-  decoding="async"
-/>
+<picture>
+  <source type="image/webp" srcset={srcset} sizes={sizes} />
+  <img
+    src={`${base}${jpg}`}
+    alt={alt}
+    class={className || undefined}
+    width={width}
+    height={height}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding={loading === 'eager' ? 'sync' : 'async'}
+  />
+</picture>
 
 <style>
+  /* <picture> не участвует в раскладке: правила страницы для img
+     (размеры, обрезка, сетка) работают как раньше. */
+  picture{display:contents}
   /* Стиль живёт здесь: Astro скоупит по компоненту, и правило из страницы
-     до этой картинки не дотянулось бы. */
+     до этой картинки не дотянулось бы. height:100% перебивает атрибут
+     height — атрибуты нужны только для пропорций до загрузки. */
   img{
     display:block;
     width:100%;

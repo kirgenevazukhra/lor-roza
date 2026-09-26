@@ -77,7 +77,12 @@ const filmstrip = [
 <meta name="twitter:image" content={ogImage} />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Oranienbaum&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<!-- Шрифты грузятся, не задерживая первую отрисовку: до их прихода
+     текст виден системным шрифтом (display=swap). Без JS — обычная ссылка. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Oranienbaum&family=Onest:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oranienbaum&family=Onest:wght@300;400;500;600&display=swap" /></noscript>
+<!-- Фон первого экрана — самый крупный элемент на мобильном (LCP). -->
+<link rel="preload" as="image" href={`${base}images/textures/hero-bg.webp`} fetchpriority="high" />
 <script is:inline>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json" set:html={ld(schema)} />
 <!-- Пути к текстурам в CSS абсолютные, поэтому base подставляем переменными. -->
@@ -151,7 +156,7 @@ const filmstrip = [
     {services.whyMe.map((w, i) => (
       <article class="pillar">
         <div class="pillar-head">
-          <img class="pillar-ico" src={`${base}images/icons/${w.id}.png`} alt="" width="44" height="44" loading="lazy" decoding="async" />
+          <img class="pillar-ico" src={`${base}images/icons/${w.id}-88.png`} srcset={`${base}images/icons/${w.id}-88.png 2x, ${base}images/icons/${w.id}-132.png 3x`} alt="" width="44" height="44" loading="lazy" decoding="async" />
           <span class="pillar-no">{String(i + 1).padStart(2, '0')}</span>
         </div>
         <h3>{w.title}</h3>
@@ -182,7 +187,7 @@ const filmstrip = [
     {services.complaints.map((c) => (
       <li>
         <span class="entry-tag">
-          <img src={`${base}images/icons/${regionIcon[c.region]}.png`} alt="" width="30" height="30" loading="lazy" decoding="async" />
+          <img src={`${base}images/icons/${regionIcon[c.region]}-60.png`} srcset={`${base}images/icons/${regionIcon[c.region]}-60.png 2x, ${base}images/icons/${regionIcon[c.region]}-90.png 3x`} alt="" width="30" height="30" loading="lazy" decoding="async" />
           {c.region}
         </span>
         <h3>{c.title}</h3>
