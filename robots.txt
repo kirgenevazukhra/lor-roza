@@ -1,0 +1,5 @@
+# Черновик на согласовании. Индексация закрыта до запуска на своём домене.
+User-agent: *
+Disallow: /
+
+Sitemap: https://kirgenevazukhra.github.io/lor-roza/sitemap.xml
