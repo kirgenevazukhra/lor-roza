@@ -17,10 +17,6 @@ const schema = article
       image: video ? new URL(`${base}video/${video.poster}`, Astro.site).href : ogImage,
     })
   : null;
-
-const dateLabel = date
-  ? new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(date)
-  : null;
 ---
 
 <!doctype html>
@@ -68,7 +64,6 @@ const dateLabel = date
       {description && <p class="lede">{description}</p>}
       <p class="byline">
         <span>{contacts.doctorName}</span>
-        {dateLabel && <em>{dateLabel}</em>}
       </p>
     </header>
 
@@ -150,7 +145,6 @@ h1{
   margin:0 0 36px; padding-bottom:22px; border-bottom:1px solid var(--line);
   font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft);
 }
-.byline em{font-style:normal; color:var(--gold)}
 
 /* ── ролик ──────────────────────────────────────── */
 /* Вертикальный кадр 9:16: во всю ширину колонки он подавил бы текст,

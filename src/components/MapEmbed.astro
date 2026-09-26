@@ -1,13 +1,15 @@
 ---
-// Карта в блоке «Запись». До нажатия — подложка в цветах сайта: код
-// Яндекса не грузится вовсе, ни байта трафика и ни одной сторонней
+// Карта в блоке «Запись» — виджет 2ГИС с карточкой Lor.roza. До нажатия —
+// подложка в цветах сайта: код 2ГИС не грузится вовсе, ни байта трафика и ни одной сторонней
 // cookie, пока человек сам не попросил карту. Без JS подложка остаётся
 // обычной ссылкой на 2ГИС. Координаты сверены по карточке Lor.roza в 2ГИС.
 import { contacts } from '../lib/site.js';
 
 const { lat, lon } = contacts.geo;
-const ll = `${lon}%2C${lat}`;
-const src = `https://yandex.kz/map-widget/v1/?ll=${ll}&z=17&pt=${ll}%2Cpm2rdm&lang=ru_RU`;
+// id организации — из ссылки на карточку в 2ГИС
+const org = contacts.dgis.split('/').pop();
+const options = { pos: { lat, lon, zoom: 17 }, opt: { city: 'astana' }, org };
+const src = `https://widgets.2gis.com/widget?type=firmsonmap&options=${encodeURIComponent(JSON.stringify(options))}`;
 ---
 
 <div class="map" data-map-src={src}>
@@ -38,7 +40,8 @@ const src = `https://yandex.kz/map-widget/v1/?ll=${ll}&z=17&pt=${ll}%2Cpm2rdm&la
 
 <style>
   .map{
-    position:relative; aspect-ratio:4/3; margin:0 0 12px;
+    /* на телефоне выше: карточка 2ГИС занимает ~270px и закрыла бы метку */
+    position:relative; aspect-ratio:4/5; margin:0 0 12px;
     border:1px solid rgba(244,239,231,.16); background:rgba(244,239,231,.04);
     overflow:hidden;
   }

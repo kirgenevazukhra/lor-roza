@@ -270,14 +270,10 @@ const filmstrip = [
     {reviews.items.map((r) => (
       <blockquote class="quote">
         <p>{r.text}</p>
-        <cite>{r.name}<em>{r.date.split('-').reverse().join('.')} · 2ГИС</em></cite>
+        <cite>{r.name}<em>2ГИС</em></cite>
       </blockquote>
     ))}
   </div>
-  <p class="rating-line">
-    <span class="rating-val">{String(reviews.rating).replace('.', ',')}</span>
-    <span class="rating-of">на основании {reviews.totalCount} отзывов в 2ГИС</span>
-  </p>
   <a class="link-out" href={contacts.dgis}><span>Читать все отзывы</span></a>
 </section>
 
@@ -600,13 +596,6 @@ h1{
 .quote cite{font-style:normal; display:flex; flex-direction:column; font-size:14px}
 .quote cite em{font-style:normal; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-top:5px}
 .sample-tag{display:inline-block; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin:0 0 10px}
-.rating-line{
-  display:flex; align-items:baseline; gap:12px; margin:26px 0 0;
-}
-.rating-val{
-  font-family:var(--display); font-size:38px; line-height:1; color:var(--ink);
-}
-.rating-of{font-size:14px; color:var(--ink-soft)}
 .link-out{
   display:inline-flex; align-items:center; min-height:44px; margin-top:10px;
   font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
