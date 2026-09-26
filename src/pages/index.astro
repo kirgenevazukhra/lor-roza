@@ -86,7 +86,7 @@ const filmstrip = [
 <!-- ─── ПЕРВЫЙ ЭКРАН ─────────────────────────────── -->
 <Topbar />
 
-<section class="hero">
+<section class="hero" data-section="hero">
   <figure class="hero-figure">
     <Photo
       name="portrait-tools"
@@ -226,7 +226,7 @@ const filmstrip = [
 <hr class="orn" />
 
 <!-- ─── ЦЕНЫ ─────────────────────────────────────── -->
-<section class="sec sand" id="prices">
+<section class="sec sand" id="prices" data-section="prices">
   <p class="kicker">Прайс</p>
   <h2 class="display reveal"><span class="ln">Услуги и цены</span></h2>
   <div class="price-list">
@@ -249,7 +249,7 @@ const filmstrip = [
 </section>
 
 <!-- ─── ОТЗЫВЫ ───────────────────────────────────── -->
-<section class="sec cream" id="reviews">
+<section class="sec cream" id="reviews" data-section="reviews">
   <p class="kicker">Отзывы</p>
   <h2 class="display reveal"><span class="ln">Что говорят пациенты</span></h2>
   {reviews.pending && <p class="pending-flag">Образцы разметки. Настоящие отзывы переносятся из 2ГИС вручную.</p>}
@@ -314,7 +314,7 @@ const filmstrip = [
 </section>
 
 <!-- ─── ЗАПИСЬ ───────────────────────────────────── -->
-<section class="sec dark cta" id="contacts">
+<section class="sec dark cta" id="contacts" data-section="contacts">
   <figure class="cta-fig">
     <Photo name="wide-child" alt="Врач и маленькая пациентка" sizes="100vw" />
   </figure>
@@ -342,9 +342,10 @@ const filmstrip = [
   <p>{contacts.doctorName} · {contacts.specialty} · {contacts.city}</p>
   <p>Часы работы: {contacts.hours}</p>
   <p class="muted">Информация на сайте не заменяет очную консультацию.</p>
+  <p class="muted">Политика конфиденциальности: {contacts.privacy}</p>
 </footer>
 
-<a class="sticky-wa" href={contacts.whatsapp}>Написать в WhatsApp</a>
+<a class="sticky-wa" href={contacts.whatsapp} data-section="sticky">Написать в WhatsApp</a>
 
 <style>
 *{box-sizing:border-box}
@@ -787,6 +788,9 @@ h1{
     targets.forEach((t) => t.classList.add('is-in'));
   }
 
+</script>
+<script>
+  import '../scripts/analytics.js';
 </script>
 </body>
 </html>

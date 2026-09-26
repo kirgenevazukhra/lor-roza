@@ -79,7 +79,7 @@ const dateLabel = date
       <slot />
     </div>
 
-    <footer class="tail">
+    <footer class="tail" data-section="article">
       <p class="disclaimer">
         Материал носит справочный характер и не заменяет очную консультацию.
         План лечения подбирается на приёме.
@@ -96,9 +96,10 @@ const dateLabel = date
   <p>{contacts.doctorName} · {contacts.specialty} · {contacts.city}</p>
   <p>Часы работы: {contacts.hours}</p>
   <p class="muted">Информация на сайте не заменяет очную консультацию.</p>
+  <p class="muted">Политика конфиденциальности: {contacts.privacy}</p>
 </footer>
 
-<a class="sticky-wa" href={contacts.whatsapp}>Написать в WhatsApp</a>
+<a class="sticky-wa" href={contacts.whatsapp} data-section="sticky">Написать в WhatsApp</a>
 
 <style>
 *{box-sizing:border-box}
@@ -218,5 +219,8 @@ h1{
 }
 @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
 </style>
+<script>
+  import '../scripts/analytics.js';
+</script>
 </body>
 </html>
