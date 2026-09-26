@@ -1,6 +1,7 @@
 ---
 import Photo from '../components/Photo.astro';
 import Topbar from '../components/Topbar.astro';
+import MapEmbed from '../components/MapEmbed.astro';
 import '../styles/tokens.css';
 import { contacts, services, reviews, faq, prices, byGroup, hero, about, heroLineHead, heroLineTail } from '../lib/site.js';
 import { getCollection } from 'astro:content';
@@ -327,6 +328,7 @@ const filmstrip = [
       <dt>Телефон</dt><dd><a href={contacts.phoneHref}>{contacts.phoneDisplay}</a></dd>
       <dt>Instagram</dt><dd><a href={contacts.instagram}>{contacts.instagramHandle}</a></dd>
     </dl>
+    <MapEmbed />
     <div class="actions">
       <a class="btn btn-solid" href={contacts.whatsapp}>Написать в WhatsApp</a>
       <a class="btn btn-line" href={contacts.dgis}>Открыть в 2ГИС</a>

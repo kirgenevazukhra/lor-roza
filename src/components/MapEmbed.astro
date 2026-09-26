@@ -1,0 +1,68 @@
+---
+// Карта в блоке «Запись». До нажатия — подложка в цветах сайта: код
+// Яндекса не грузится вовсе, ни байта трафика и ни одной сторонней
+// cookie, пока человек сам не попросил карту. Без JS подложка остаётся
+// обычной ссылкой на 2ГИС. Координаты сверены по карточке Lor.roza в 2ГИС.
+import { contacts } from '../lib/site.js';
+
+const { lat, lon } = contacts.geo;
+const ll = `${lon}%2C${lat}`;
+const src = `https://yandex.kz/map-widget/v1/?ll=${ll}&z=17&pt=${ll}%2Cpm2rdm&lang=ru_RU`;
+---
+
+<div class="map" data-map-src={src}>
+  <a class="map-face" href={contacts.dgis} data-map-open>
+    <span class="map-pin" aria-hidden="true"></span>
+    <span class="map-addr">{contacts.street}</span>
+    <span class="map-cta">Показать карту</span>
+  </a>
+</div>
+<p class="map-note">{contacts.landmark}</p>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-map-src]').forEach((box) => {
+    const face = box.querySelector('[data-map-open]');
+    face?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const f = document.createElement('iframe');
+      f.src = box.dataset.mapSrc!;
+      f.title = 'Карта: как добраться до кабинета';
+      f.loading = 'lazy';
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      f.setAttribute('allowfullscreen', '');
+      box.replaceChildren(f);
+      box.classList.add('is-live');
+    });
+  });
+</script>
+
+<style>
+  .map{
+    position:relative; aspect-ratio:4/3; margin:0 0 12px;
+    border:1px solid rgba(244,239,231,.16); background:rgba(244,239,231,.04);
+    overflow:hidden;
+  }
+  .map :global(iframe){display:block; width:100%; height:100%; border:0}
+  .map-face{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:10px;
+    color:var(--cream); text-decoration:none; text-align:center; padding:20px;
+    /* намёк на план квартала: тонкая сетка улиц в цвет линий блока */
+    background-image:
+      linear-gradient(rgba(244,239,231,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(244,239,231,.06) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+  .map-pin{
+    width:14px; height:14px; border-radius:50% 50% 50% 0;
+    transform:rotate(-45deg); background:var(--gold-lt); margin-bottom:6px;
+  }
+  .map-addr{font-size:16px; line-height:1.4}
+  .map-cta{
+    font-size:12px; letter-spacing:.2em; text-transform:uppercase; font-weight:500;
+    color:var(--gold-lt); padding:12px 4px; border-bottom:1px solid currentColor;
+  }
+  .map-face:focus-visible{outline:2px solid var(--gold-lt); outline-offset:-4px}
+  .map-note{margin:0 0 28px; font-size:14px; color:#B5A898}
+  @media (min-width:900px){ .map{aspect-ratio:16/9} }
+</style>
