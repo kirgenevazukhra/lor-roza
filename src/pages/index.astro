@@ -5,6 +5,7 @@ import MapEmbed from '../components/MapEmbed.astro';
 import '../styles/tokens.css';
 import { contacts, services, reviews, faq, prices, byGroup, hero, about, heroLineHead, heroLineTail } from '../lib/site.js';
 import { getCollection } from 'astro:content';
+import education from '../data/education.json';
 import { homeGraph, ld } from '../lib/schema.js';
 
 // Мессенджеры требуют абсолютный URL — иначе превью не собирается.
@@ -144,6 +145,31 @@ const filmstrip = [
       <p class="prose">{about}</p>
       <p class="sig">{contacts.doctorName}<em>врач-оториноларинголог</em></p>
     </div>
+  </div>
+
+  <div class="cv">
+    <p class="rule-label"><span class="rule"></span>Образование</p>
+    <ol class="cv-list">
+      {education.education.map((e) => (
+        <li>
+          <span class="cv-when">{e.years}</span>
+          <span class="cv-what"><strong>{e.level}</strong><em>{e.field}</em></span>
+        </li>
+      ))}
+    </ol>
+
+    <p class="rule-label"><span class="rule"></span>Профессиональное развитие</p>
+    <p class="prose">{education.development}</p>
+
+    <p class="cv-sub">Дополнительное профессиональное обучение</p>
+    <ol class="cv-list">
+      {education.courses.map((c) => (
+        <li>
+          <span class="cv-when">{c.year}</span>
+          <span class="cv-what"><strong>«{c.title}»</strong><em>{c.by}</em></span>
+        </li>
+      ))}
+    </ol>
   </div>
 </section>
 
@@ -478,6 +504,25 @@ h1{
   font-size:12px; letter-spacing:.18em; text-transform:uppercase;
   color:var(--gold); margin-top:8px;
 }
+/* Образование и обучение: строка = годы слева, что и где — справа. */
+.cv{margin-top:52px}
+.cv .rule-label{margin-top:40px}
+.cv .rule-label:first-child{margin-top:0}
+.cv-sub{
+  margin:30px 0 12px; font-size:12px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--ink-soft);
+}
+.cv-list{list-style:none; margin:0; padding:0; border-top:1px solid var(--line)}
+.cv-list li{
+  display:grid; grid-template-columns:88px 1fr; column-gap:16px;
+  padding:14px 0; border-bottom:1px solid var(--line);
+}
+.cv-when{
+  font-size:12px; letter-spacing:.12em; color:var(--gold);
+  padding-top:3px; font-variant-numeric:tabular-nums;
+}
+.cv-what strong{display:block; font-weight:400; font-size:16px; line-height:1.45; color:var(--ink)}
+.cv-what em{display:block; font-style:normal; font-size:14px; line-height:1.45; color:var(--ink-soft); margin-top:3px}
 
 /* ── принципы ───────────────────────────────────── */
 .pillars{display:grid; grid-template-columns:1fr}
