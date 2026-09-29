@@ -19,10 +19,9 @@ const schema = homeGraph({
   doctorImage: new URL(`${base}images/portrait-tools-1024.jpg`, Astro.site).href,
 });
 
-// Статьи: готовые ведут на свои страницы, неготовые показываются как «готовится».
+// Статьи: на сайте только готовые, черновики не показываются.
 const stati = (await getCollection('stati')).sort((a, b) => a.data.order - b.data.order);
 const gotovye = stati.filter((a) => !a.data.draft);
-const gotovyatsya = stati.filter((a) => a.data.draft);
 
 // Область жалобы -> иконка
 const regionIcon = { 'ухо': 'ear', 'нос': 'nose', 'горло': 'throat' };
@@ -295,15 +294,6 @@ const filmstrip = [
     ))}
   </ul>
 
-  {gotovyatsya.length > 0 && (
-    <div class="soon">
-      <p class="rule-label"><span class="rule"></span>Готовятся</p>
-      <ul class="topics">
-        {gotovyatsya.map((a) => <li>{a.data.title}</li>)}
-      </ul>
-      <p class="sec-note">Медицинские тексты выходят после проверки врачом.</p>
-    </div>
-  )}
 </section>
 
 <!-- ─── ВОПРОСЫ ──────────────────────────────────── -->
@@ -463,7 +453,6 @@ h1{
 .lede{font-size:18px; color:var(--ink-soft); margin:0 0 30px; max-width:46ch}
 .lede.light{color:#C6BAA9}
 .prose{font-size:16px; margin:0 0 20px; color:var(--ink-soft)}
-.sec-note{margin:-10px 0 24px; font-size:15px; color:var(--ink-soft); font-style:italic}
 .micro{margin:20px auto 0; font-size:13px; color:var(--ink-soft); font-style:italic}
 
 /* Орнаментальный разделитель — только между кремовыми разделами. */
@@ -623,10 +612,7 @@ h1{
   font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold);
   border-bottom:1px solid currentColor; padding-bottom:3px;
 }
-.soon{margin:0 auto}
 .guide{margin:0 auto 32px}
-.topics{list-style:none; margin:0; padding:0}
-.topics li{padding:12px 0; border-bottom:1px solid var(--line); font-size:16px; color:var(--ink-soft)}
 .faq details{border-bottom:1px solid var(--line)}
 .faq summary{
   cursor:pointer; padding:19px 0; font-size:17px; list-style:none;
