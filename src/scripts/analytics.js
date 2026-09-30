@@ -67,8 +67,7 @@ function send(name, section) {
 
 document.addEventListener('click', (e) => {
   const a = e.target instanceof Element ? e.target.closest('a[href]') : null;
-  // Подложка карты ведёт на 2ГИС только без JS; с JS она открывает карту.
-  if (!a || a.hasAttribute('data-map-open')) return;
+  if (!a) return;
   const name = eventFor(a.getAttribute('href') || '');
   if (!name) return;
   const section = a.closest('[data-section]')?.getAttribute('data-section') || 'other';

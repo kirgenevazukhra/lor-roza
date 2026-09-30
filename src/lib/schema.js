@@ -5,8 +5,6 @@
 // а самостоятельная разметка отзывов о себе нарушает правила Google.
 import { contacts, faq } from './site.js';
 
-const isTodo = (v) => !v || String(v).startsWith('{{TODO');
-
 export function ids(home) {
   return { clinic: `${home}#clinic`, doctor: `${home}#doctor`, site: `${home}#website` };
 }
@@ -22,7 +20,8 @@ const phone = () => contacts.phoneHref.replace('tel:', '');
 
 export function homeGraph({ home, image, doctorImage }) {
   const id = ids(home);
-  const hours = isTodo(contacts.hours) ? {} : { openingHours: contacts.hours };
+  // Формат schema.org; человеческая запись часов — в contacts.hours.
+  const hours = contacts.openingHours ? { openingHours: contacts.openingHours } : {};
   const clinic = {
     '@type': 'MedicalClinic',
     '@id': id.clinic,
