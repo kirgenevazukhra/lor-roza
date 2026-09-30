@@ -299,7 +299,7 @@ const filmstrip = [
       </blockquote>
     ))}
   </div>
-  <a class="link-out" href={contacts.dgis}><span>Читать все отзывы</span></a>
+  <p class="more"><a class="link-out" href={contacts.dgis}><span>Читать все отзывы</span></a></p>
 </section>
 
 <!-- ─── МАТЕРИАЛЫ ────────────────────────────────── -->
@@ -635,6 +635,8 @@ h1{
   text-decoration:none; font-weight:500;
 }
 .link-out span{border-bottom:1px solid currentColor; padding-bottom:3px}
+/* Блок-обёртка: ссылка встаёт в колонку раздела, а не к краю экрана. */
+.more{margin-top:14px; margin-bottom:0}
 
 /* ── материалы / faq ────────────────────────────── */
 .articles{list-style:none; margin:0 0 40px; padding:0}
