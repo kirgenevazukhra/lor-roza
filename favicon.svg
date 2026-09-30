@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Lor.roza">
+  <!-- Временный знак: точка из логотипа «Lor.roza» в палитре сайта.
+       Заменить, когда придёт настоящий фирменный знак. -->
+  <rect width="64" height="64" rx="12" fill="#221D18"/>
+  <circle cx="32" cy="32" r="13" fill="none" stroke="#C4A97E" stroke-width="3"/>
+  <circle cx="32" cy="32" r="4.5" fill="#C4A97E"/>
+</svg>
